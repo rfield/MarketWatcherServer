@@ -24,22 +24,10 @@ func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*p
 
 // TODO use https://www.marketdata.app/sdk/go/golang-stock-api/real-time-stock-api/ for real data
 
+// StreamPrices streams real-time price updates for the requested price IDs.
+// For now, the streams three prices for each requested ticker symbol sleeping between each batch
 func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceService_StreamPricesServer) error {
 	log.Printf("StreamPrices() - streaming prices for: %v", req.GetPriceIds())
-
-	// For now, the stream is 3 prices in 30 seconds prices for each requested ID
-	// In the real implementation, this would be a continuous stream of updates
-	// Use a Context to set a timeout on the API calls
-	// ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	// defer cancel()
-
-	// client, err := api.GetClient()
-	// if err != nil {
-	// 	log.Printf("Error getting client: %v", err)
-	// 	return err
-	// }
-	// client.Timeout(1)
-	// client.StockQuote().WithContext(context.Background())
 
 	for range 3 {
 		for _, id := range req.GetPriceIds() {
