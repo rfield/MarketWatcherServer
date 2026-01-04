@@ -1,0 +1,33 @@
+syntax="proto3";
+
+package price;
+
+option go_package = "./pb";
+service PriceService {
+  // Standard CRUD operations
+  rpc GetPrice (GetPriceRequest) returns (GetPriceReply) {}
+
+  // Streaming operations
+  rpc StreamPrices (StreamPricesRequest) returns (stream StreamPricesReply) {}
+}
+
+message GetPriceRequest {
+  string price_id = 1;
+}
+
+message GetPriceReply {
+  Price price = 1;
+}
+
+message StreamPricesRequest {
+  repeated string price_ids = 1;
+}
+
+message StreamPricesReply {
+  Price price = 1;
+}
+
+message Price {
+  string price_id = 1;
+  double price = 2;
+}

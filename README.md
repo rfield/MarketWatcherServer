@@ -1,0 +1,19 @@
+# MarketWatcher Server
+
+The MarketWatcher Server is a gRPC server that streams real-time stock prices.
+
+The application is written in Go and is meant to illustrate some interesting features of gRPC and other frameworks, while demonstrating some best practices. The application is only a demo, meant primarily as a learning tool.
+
+## Pre-requisites
+You will want to install the MarketWatcher App, and Android application that exercises some of the server's capabilities. 
+
+Additionally, you will need to install Go.
+
+The server also depends on a very simple Postgres database for it's list of users and their stock holdings. So you should install Postgres as well. The DDL to create the tables is in the ./sql directory.
+
+## How to Run
+Do this:
+```
+make
+bin/mkt_server
+```

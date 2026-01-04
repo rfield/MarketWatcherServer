@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package account;
+
+option go_package = "./pb";
+
+service AssetService {
+  // Standard CRUD operations
+
+  // Additional operations
+  // Note: The Login method would typically involve authentication and session management,
+  // which are not covered here.
+  // This is just a placeholder for demonstration purposes.
+  rpc ListAssetsForUser (ListAssetsForUserRequest) returns (ListAssetsForUserReply) {}
+}
+
+message ListAssetsForUserRequest {
+  string user_id = 1;
+}
+
+message ListAssetsForUserReply {
+    repeated Asset assets = 1;
+}
+
+message Asset {
+  string user_id = 1;
+  string account_name = 2;
+  string ticker = 3;
+  double holding_amount = 4;
+}

@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./pb";
+
+service UserService {
+    rpc GetUser (GetUserRequest) returns (GetUserReply) {}
+    rpc CreateUser (CreateUserRequest) returns (CreateUserReply) {}
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply) {}
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply) {}
+
+    rpc AuthenticateUser (AuthenticateUserRequest) returns (AuthenticateUserReply) {}
+}
+
+message GetUserRequest {
+    string user_id = 1;
+}
+
+message GetUserReply {
+    User user = 1;
+}
+
+message CreateUserRequest {
+    User user = 1;
+}
+
+message CreateUserReply {
+    User user = 1;
+}
+
+message UpdateUserRequest {
+    User user = 1;
+}   
+
+message UpdateUserReply {
+    User user = 1;
+}   
+
+message DeleteUserRequest {
+    string user_id = 1;
+}
+
+message DeleteUserReply {
+    bool success = 1;
+}
+
+message AuthenticateUserRequest {
+  string username = 1;
+  string password = 2;
+}
+message AuthenticateUserReply {
+  string token = 1;
+  string user_id = 2;
+}
+
+message User {
+    string user_id = 1;
+    Credentials credentials = 2;
+    string given_name = 3;
+    string family_name = 4;
+    string email = 5;
+    repeated string account_ids = 6;
+}
+
+message Credentials {
+    string username = 1;
+    string password_hash = 2;
+    string token = 3;
+}
