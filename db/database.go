@@ -6,25 +6,58 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
+	"github.com/spf13/viper"
 	"rjfield.com/backend/generated/pb"
 )
 
 const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "admin"
-	dbname   = "postgres"
+	default_host     = "localhost"
+	default_port     = 5432
+	default_user     = "postgres"
+	default_password = "admin"
+	default_dbname   = "postgres"
 )
 
 var db *sql.DB
 
 func init() {
+
+	var err error
+
+	viper.SetConfigName("config") // name of config file (without extension)
+	viper.AddConfigPath(".")      // optionally look for config in the working directory
+	err = viper.ReadInConfig()    // Find and read the config file
+	if err != nil {               // Handle errors reading the config file
+		log.Fatalf("init() - Fatal error config file: %v \n", err)
+	}
+
+	host := viper.GetString("host")
+	if host == "" {
+		host = default_host
+	}
+	port := viper.GetInt("port")
+	if port == 0 {
+		port = default_port
+	}
+	user := viper.GetString("user")
+	if user == "" {
+		user = default_user
+	}
+	password := viper.GetString("password")
+	if password == "" {
+		password = default_password
+	}
+	dbname := viper.GetString("dbname")
+	if dbname == "" {
+		dbname = default_dbname
+	}
+
 	// Connection string
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 
-	var err error
+	log.Printf("init() - connecting to database at %s:%d with username %s, password %s and database %s", host, port, user, "****", dbname)
+
 	// Open a database connection
 	db, err = sql.Open("postgres", psqlInfo)
 	if err != nil {
@@ -196,8 +229,6 @@ func ListAssetsByUser(userId string) ([]*pb.Asset, error) {
 		ast.account_id = a.id and
 		u.id = $1
 	order by a.name`
-	//  `SELECT user_id, account_name, ticker, holding_amount
-	// 	 FROM assets WHERE user_id=$1;`
 
 	rows, err := db.Query(sqlStatement, userId)
 	if err != nil {
