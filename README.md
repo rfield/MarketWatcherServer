@@ -11,9 +11,14 @@ Additionally, you will need to install Go.
 
 The server also depends on a very simple Postgres database for it's list of users and their stock holdings. So you should install Postgres as well. The DDL to create the tables is in the ./sql directory.
 
+You will want to create an account with the MarketData.App API, or find another source for stock prices. Access to the MarketData.app APIs relies on a token associated with your account, usually pulled from the MARKETDATA_TOKEN environment variable. See References below for additional information.
+
 ## How to Run
 Do this:
 ```
 make
 bin/mkt_server
 ```
+
+## References
+[MarketData.App APIs for Real-time stock prices](https://www.marketdata.app/sdk/go/golang-stock-api/real-time-stock-api/)
