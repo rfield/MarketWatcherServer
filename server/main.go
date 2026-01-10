@@ -16,15 +16,15 @@ import (
 func main() {
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("main() - failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
 	pb.RegisterAccountServiceServer(s, &account.AccountServer{})
 	pb.RegisterPriceServiceServer(s, &price.PriceServer{})
 	pb.RegisterUserServiceServer(s, &user.UserServer{})
 	pb.RegisterAssetServiceServer(s, &asset.AssetServer{})
-	log.Printf("server listening at %v", lis.Addr())
+	log.Printf("main() - server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		log.Fatalf("main() - failed to serve: %v", err)
 	}
 }
