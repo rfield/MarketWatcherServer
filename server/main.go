@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 	"net"
+	"strconv"
 
 	"rjfield.com/backend/account"
 	"rjfield.com/backend/asset"
+	"rjfield.com/backend/config"
 	"rjfield.com/backend/generated/pb"
 	"rjfield.com/backend/price"
 	"rjfield.com/backend/user"
@@ -14,7 +16,12 @@ import (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	config := config.GetConfig()
+	grpcPort := config.Grpc.Port
+
+	log.Printf("main() - starting server on port %d", grpcPort)
+
+	lis, err := net.Listen("tcp", ":"+strconv.Itoa(grpcPort))
 	if err != nil {
 		log.Fatalf("main() - failed to listen: %v", err)
 	}
