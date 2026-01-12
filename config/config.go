@@ -9,15 +9,18 @@ import (
 )
 
 const (
-	default_host     = "localhost"
-	default_port     = 5432
-	default_user     = "postgres"
-	default_password = "admin"
-	default_dbname   = "postgres"
+	default_grpc_port = 50051
+	default_host      = "localhost"
+	default_port      = 5432
+	default_user      = "postgres"
+	default_password  = "admin"
+	default_dbname    = "postgres"
 )
 
 type Config struct {
-	GRPCPort int
+	Grpc struct {
+		Port int
+	}
 	Database struct {
 		Host     string
 		Port     int
@@ -48,18 +51,22 @@ func LoadConfig() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	grpcPort := config.GRPCPort
+	log.Printf("grpcPort: %d", config.Grpc.Port)
+
+	grpcPort := config.Grpc.Port
 	if grpcPort == 0 {
+		grpcPort = default_grpc_port
 		if os.Getenv("PORT") != "" {
+			log.Printf("$PORT = %s", os.Getenv("PORT"))
 			var err error
 			_, err = fmt.Sscanf(os.Getenv("PORT"), "%d", &grpcPort)
-			if err != nil {
+			if err != nil || grpcPort == 0 {
 				log.Printf("loadConfig() - invalid PORT environment variable: %v", err)
-				grpcPort = 50051
+				grpcPort = default_grpc_port
 			}
 		}
 	}
-	config.GRPCPort = grpcPort
+	config.Grpc.Port = grpcPort
 
 	if config.Database.Host == "" {
 		config.Database.Host = default_host
