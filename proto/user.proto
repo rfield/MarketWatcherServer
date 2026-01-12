@@ -5,11 +5,15 @@ package user;
 option go_package = "./pb";
 
 service UserService {
+    // Standard CRUD operations
     rpc GetUser (GetUserRequest) returns (GetUserReply) {}
     rpc CreateUser (CreateUserRequest) returns (CreateUserReply) {}
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply) {}
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply) {}
 
+    // Additional operations
+    // Note that AuthenticateUser() is for demonstration purposed only. 
+    // Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
     rpc AuthenticateUser (AuthenticateUserRequest) returns (AuthenticateUserReply) {}
 }
 

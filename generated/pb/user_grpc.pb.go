@@ -30,10 +30,14 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
+	// Standard CRUD operations
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserReply, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserReply, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserReply, error)
+	// Additional operations
+	// Note that AuthenticateUser() is for demonstration purposed only.
+	// Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
 	AuthenticateUser(ctx context.Context, in *AuthenticateUserRequest, opts ...grpc.CallOption) (*AuthenticateUserReply, error)
 }
 
@@ -99,10 +103,14 @@ func (c *userServiceClient) AuthenticateUser(ctx context.Context, in *Authentica
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
 type UserServiceServer interface {
+	// Standard CRUD operations
 	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserReply, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserReply, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserReply, error)
+	// Additional operations
+	// Note that AuthenticateUser() is for demonstration purposed only.
+	// Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
 	AuthenticateUser(context.Context, *AuthenticateUserRequest) (*AuthenticateUserReply, error)
 	mustEmbedUnimplementedUserServiceServer()
 }

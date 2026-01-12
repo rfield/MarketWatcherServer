@@ -27,9 +27,6 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AssetServiceClient interface {
 	// Additional operations
-	// Note: The Login method would typically involve authentication and session management,
-	// which are not covered here.
-	// This is just a placeholder for demonstration purposes.
 	ListAssetsForUser(ctx context.Context, in *ListAssetsForUserRequest, opts ...grpc.CallOption) (*ListAssetsForUserReply, error)
 }
 
@@ -56,9 +53,6 @@ func (c *assetServiceClient) ListAssetsForUser(ctx context.Context, in *ListAsse
 // for forward compatibility.
 type AssetServiceServer interface {
 	// Additional operations
-	// Note: The Login method would typically involve authentication and session management,
-	// which are not covered here.
-	// This is just a placeholder for demonstration purposes.
 	ListAssetsForUser(context.Context, *ListAssetsForUserRequest) (*ListAssetsForUserReply, error)
 	mustEmbedUnimplementedAssetServiceServer()
 }
