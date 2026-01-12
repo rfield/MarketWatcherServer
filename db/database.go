@@ -6,16 +6,8 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
-	"github.com/spf13/viper"
+	"rjfield.com/backend/config"
 	"rjfield.com/backend/generated/pb"
-)
-
-const (
-	default_host     = "localhost"
-	default_port     = 5432
-	default_user     = "postgres"
-	default_password = "admin"
-	default_dbname   = "postgres"
 )
 
 var db *sql.DB
@@ -24,39 +16,16 @@ func init() {
 
 	var err error
 
-	viper.SetConfigName("config") // name of config file (without extension)
-	viper.AddConfigPath(".")      // optionally look for config in the working directory
-	err = viper.ReadInConfig()    // Find and read the config file
-	if err != nil {               // Handle errors reading the config file
-		log.Fatalf("init() - Fatal error config file: %v \n", err)
-	}
+	var configData *config.Config
 
-	host := viper.GetString("host")
-	if host == "" {
-		host = default_host
-	}
-	port := viper.GetInt("port")
-	if port == 0 {
-		port = default_port
-	}
-	user := viper.GetString("user")
-	if user == "" {
-		user = default_user
-	}
-	password := viper.GetString("password")
-	if password == "" {
-		password = default_password
-	}
-	dbname := viper.GetString("dbname")
-	if dbname == "" {
-		dbname = default_dbname
-	}
+	configData = config.GetConfig()
 
 	// Connection string
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+		configData.Database.Host, configData.Database.Port, configData.Database.User, configData.Database.Password, configData.Database.DBName)
 
-	log.Printf("init() - connecting to database at %s:%d with username %s, password %s and database %s", host, port, user, "****", dbname)
+	log.Printf("init() - connecting to database at %s:%d with username %s, password %s and database %s",
+		configData.Database.Host, configData.Database.Port, configData.Database.User, "****", configData.Database.DBName)
 
 	// Open a database connection
 	db, err = sql.Open("postgres", psqlInfo)
