@@ -14,7 +14,6 @@ type PriceServer struct {
 }
 
 // GetPrice retrieves the current price for the given price ID.
-// Currently a stub implementation returning a fixed price.
 func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*pb.GetPriceReply, error) {
 	log.Printf("GetPrice() - received: %v", req.GetPriceId())
 	quotes, err := api.StockQuote().Symbol(req.GetPriceId()).Get()
