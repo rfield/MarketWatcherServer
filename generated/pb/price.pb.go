@@ -109,6 +109,94 @@ func (x *GetPriceReply) GetPrice() *Price {
 	return nil
 }
 
+type GetPricesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PriceIds      []string               `protobuf:"bytes,1,rep,name=price_ids,json=priceIds,proto3" json:"price_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPricesRequest) Reset() {
+	*x = GetPricesRequest{}
+	mi := &file_proto_price_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPricesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPricesRequest) ProtoMessage() {}
+
+func (x *GetPricesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_price_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPricesRequest.ProtoReflect.Descriptor instead.
+func (*GetPricesRequest) Descriptor() ([]byte, []int) {
+	return file_proto_price_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetPricesRequest) GetPriceIds() []string {
+	if x != nil {
+		return x.PriceIds
+	}
+	return nil
+}
+
+type GetPricesReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Prices        []*Price               `protobuf:"bytes,1,rep,name=prices,proto3" json:"prices,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPricesReply) Reset() {
+	*x = GetPricesReply{}
+	mi := &file_proto_price_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPricesReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPricesReply) ProtoMessage() {}
+
+func (x *GetPricesReply) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_price_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPricesReply.ProtoReflect.Descriptor instead.
+func (*GetPricesReply) Descriptor() ([]byte, []int) {
+	return file_proto_price_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetPricesReply) GetPrices() []*Price {
+	if x != nil {
+		return x.Prices
+	}
+	return nil
+}
+
 type StreamPricesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PriceIds      []string               `protobuf:"bytes,1,rep,name=price_ids,json=priceIds,proto3" json:"price_ids,omitempty"`
@@ -118,7 +206,7 @@ type StreamPricesRequest struct {
 
 func (x *StreamPricesRequest) Reset() {
 	*x = StreamPricesRequest{}
-	mi := &file_proto_price_proto_msgTypes[2]
+	mi := &file_proto_price_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -130,7 +218,7 @@ func (x *StreamPricesRequest) String() string {
 func (*StreamPricesRequest) ProtoMessage() {}
 
 func (x *StreamPricesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_price_proto_msgTypes[2]
+	mi := &file_proto_price_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -143,7 +231,7 @@ func (x *StreamPricesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamPricesRequest.ProtoReflect.Descriptor instead.
 func (*StreamPricesRequest) Descriptor() ([]byte, []int) {
-	return file_proto_price_proto_rawDescGZIP(), []int{2}
+	return file_proto_price_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *StreamPricesRequest) GetPriceIds() []string {
@@ -162,7 +250,7 @@ type StreamPricesReply struct {
 
 func (x *StreamPricesReply) Reset() {
 	*x = StreamPricesReply{}
-	mi := &file_proto_price_proto_msgTypes[3]
+	mi := &file_proto_price_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -174,7 +262,7 @@ func (x *StreamPricesReply) String() string {
 func (*StreamPricesReply) ProtoMessage() {}
 
 func (x *StreamPricesReply) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_price_proto_msgTypes[3]
+	mi := &file_proto_price_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -187,7 +275,7 @@ func (x *StreamPricesReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamPricesReply.ProtoReflect.Descriptor instead.
 func (*StreamPricesReply) Descriptor() ([]byte, []int) {
-	return file_proto_price_proto_rawDescGZIP(), []int{3}
+	return file_proto_price_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *StreamPricesReply) GetPrice() *Price {
@@ -207,7 +295,7 @@ type Price struct {
 
 func (x *Price) Reset() {
 	*x = Price{}
-	mi := &file_proto_price_proto_msgTypes[4]
+	mi := &file_proto_price_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -219,7 +307,7 @@ func (x *Price) String() string {
 func (*Price) ProtoMessage() {}
 
 func (x *Price) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_price_proto_msgTypes[4]
+	mi := &file_proto_price_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -232,7 +320,7 @@ func (x *Price) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Price.ProtoReflect.Descriptor instead.
 func (*Price) Descriptor() ([]byte, []int) {
-	return file_proto_price_proto_rawDescGZIP(), []int{4}
+	return file_proto_price_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Price) GetPriceId() string {
@@ -257,16 +345,21 @@ const file_proto_price_proto_rawDesc = "" +
 	"\x0fGetPriceRequest\x12\x19\n" +
 	"\bprice_id\x18\x01 \x01(\tR\apriceId\"3\n" +
 	"\rGetPriceReply\x12\"\n" +
-	"\x05price\x18\x01 \x01(\v2\f.price.PriceR\x05price\"2\n" +
+	"\x05price\x18\x01 \x01(\v2\f.price.PriceR\x05price\"/\n" +
+	"\x10GetPricesRequest\x12\x1b\n" +
+	"\tprice_ids\x18\x01 \x03(\tR\bpriceIds\"6\n" +
+	"\x0eGetPricesReply\x12$\n" +
+	"\x06prices\x18\x01 \x03(\v2\f.price.PriceR\x06prices\"2\n" +
 	"\x13StreamPricesRequest\x12\x1b\n" +
 	"\tprice_ids\x18\x01 \x03(\tR\bpriceIds\"7\n" +
 	"\x11StreamPricesReply\x12\"\n" +
 	"\x05price\x18\x01 \x01(\v2\f.price.PriceR\x05price\"8\n" +
 	"\x05Price\x12\x19\n" +
 	"\bprice_id\x18\x01 \x01(\tR\apriceId\x12\x14\n" +
-	"\x05price\x18\x02 \x01(\x01R\x05price2\x94\x01\n" +
+	"\x05price\x18\x02 \x01(\x01R\x05price2\xd3\x01\n" +
 	"\fPriceService\x12:\n" +
-	"\bGetPrice\x12\x16.price.GetPriceRequest\x1a\x14.price.GetPriceReply\"\x00\x12H\n" +
+	"\bGetPrice\x12\x16.price.GetPriceRequest\x1a\x14.price.GetPriceReply\"\x00\x12=\n" +
+	"\tGetPrices\x12\x17.price.GetPricesRequest\x1a\x15.price.GetPricesReply\"\x00\x12H\n" +
 	"\fStreamPrices\x12\x1a.price.StreamPricesRequest\x1a\x18.price.StreamPricesReply\"\x000\x01B\x06Z\x04./pbb\x06proto3"
 
 var (
@@ -281,26 +374,31 @@ func file_proto_price_proto_rawDescGZIP() []byte {
 	return file_proto_price_proto_rawDescData
 }
 
-var file_proto_price_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_proto_price_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_proto_price_proto_goTypes = []any{
 	(*GetPriceRequest)(nil),     // 0: price.GetPriceRequest
 	(*GetPriceReply)(nil),       // 1: price.GetPriceReply
-	(*StreamPricesRequest)(nil), // 2: price.StreamPricesRequest
-	(*StreamPricesReply)(nil),   // 3: price.StreamPricesReply
-	(*Price)(nil),               // 4: price.Price
+	(*GetPricesRequest)(nil),    // 2: price.GetPricesRequest
+	(*GetPricesReply)(nil),      // 3: price.GetPricesReply
+	(*StreamPricesRequest)(nil), // 4: price.StreamPricesRequest
+	(*StreamPricesReply)(nil),   // 5: price.StreamPricesReply
+	(*Price)(nil),               // 6: price.Price
 }
 var file_proto_price_proto_depIdxs = []int32{
-	4, // 0: price.GetPriceReply.price:type_name -> price.Price
-	4, // 1: price.StreamPricesReply.price:type_name -> price.Price
-	0, // 2: price.PriceService.GetPrice:input_type -> price.GetPriceRequest
-	2, // 3: price.PriceService.StreamPrices:input_type -> price.StreamPricesRequest
-	1, // 4: price.PriceService.GetPrice:output_type -> price.GetPriceReply
-	3, // 5: price.PriceService.StreamPrices:output_type -> price.StreamPricesReply
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	6, // 0: price.GetPriceReply.price:type_name -> price.Price
+	6, // 1: price.GetPricesReply.prices:type_name -> price.Price
+	6, // 2: price.StreamPricesReply.price:type_name -> price.Price
+	0, // 3: price.PriceService.GetPrice:input_type -> price.GetPriceRequest
+	2, // 4: price.PriceService.GetPrices:input_type -> price.GetPricesRequest
+	4, // 5: price.PriceService.StreamPrices:input_type -> price.StreamPricesRequest
+	1, // 6: price.PriceService.GetPrice:output_type -> price.GetPriceReply
+	3, // 7: price.PriceService.GetPrices:output_type -> price.GetPricesReply
+	5, // 8: price.PriceService.StreamPrices:output_type -> price.StreamPricesReply
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_proto_price_proto_init() }
@@ -314,7 +412,7 @@ func file_proto_price_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_price_proto_rawDesc), len(file_proto_price_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

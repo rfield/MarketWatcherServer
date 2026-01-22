@@ -25,8 +25,30 @@ func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*p
 	return &pb.GetPriceReply{
 		Price: &pb.Price{
 			PriceId: req.GetPriceId(),
-			Price:   quotes[0].Last,
+			// Price:   quotes[0].Last,
+			Price: 0.0,
 		},
+	}, nil
+}
+
+// GetPrices retrieves the current price for the given price ID.
+func (s *PriceServer) GetPrices(ctx context.Context, req *pb.GetPricesRequest) (*pb.GetPricesReply, error) {
+	log.Printf("GetPrices() - received: %v", req.GetPriceIds())
+	quotes, err := api.BulkStockQuotes().Symbols(req.GetPriceIds()).Get()
+	if err != nil {
+		log.Printf("GetPrice() - Error fetching stock quotes for %s: %v", req.GetPriceIds(), err)
+		return nil, err
+	}
+	log.Printf("GetPrice() - Fetched stock quote for %s: %v", req.GetPriceIds(), quotes)
+	p := make([]*pb.Price, 0, len(quotes))
+	for _, q := range quotes {
+		p = append(p, &pb.Price{
+			PriceId: q.Symbol,
+			Price:   q.Last,
+		})
+	}
+	return &pb.GetPricesReply{
+		Prices: p,
 	}, nil
 }
 
@@ -37,20 +59,20 @@ func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceS
 	log.Printf("StreamPrices() - streaming prices for: %v", req.GetPriceIds())
 
 	for range 2 {
-		for _, id := range req.GetPriceIds() {
 
-			// TODO - find a way to set a timeout on this API call
-			// Contacted the vendor about this but have not heard back yet
-			quotes, err := api.StockQuote().Symbol(id).Get()
-			if err != nil {
-				log.Printf("StreamPrices() - Error fetching stock quote for %s: %v", id, err)
-				continue
-			}
-			log.Printf("StreamPrices() - Fetched stock quote for %s: %v", id, quotes)
+		// No easy way to set a timeout here
+		quotes, err := api.BulkStockQuotes().Symbols(req.GetPriceIds()).Get()
+		if err != nil {
+			log.Printf("StreamPrices() - Error fetching bulk stock quotes for %v: %v", req.GetPriceIds(), err)
+			continue
+		}
+		log.Printf("StreamPrices() - Fetched bulk stock quotes for %v: %v", req.GetPriceIds(), quotes)
+
+		// Map quotes by symbol for easy lookup
+		for _, q := range quotes {
 			price := &pb.Price{
-				PriceId: id,
-				// Price:   rand.Float64() * 200,
-				Price: quotes[0].Last,
+				PriceId: q.Symbol,
+				Price:   q.Last,
 			}
 			if err := stream.Send(&pb.StreamPricesReply{Price: price}); err != nil {
 				return err

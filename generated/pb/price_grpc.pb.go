@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	PriceService_GetPrice_FullMethodName     = "/price.PriceService/GetPrice"
+	PriceService_GetPrices_FullMethodName    = "/price.PriceService/GetPrices"
 	PriceService_StreamPrices_FullMethodName = "/price.PriceService/StreamPrices"
 )
 
@@ -29,6 +30,7 @@ const (
 type PriceServiceClient interface {
 	// Standard CRUD operations
 	GetPrice(ctx context.Context, in *GetPriceRequest, opts ...grpc.CallOption) (*GetPriceReply, error)
+	GetPrices(ctx context.Context, in *GetPricesRequest, opts ...grpc.CallOption) (*GetPricesReply, error)
 	// Streaming operations
 	StreamPrices(ctx context.Context, in *StreamPricesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[StreamPricesReply], error)
 }
@@ -45,6 +47,16 @@ func (c *priceServiceClient) GetPrice(ctx context.Context, in *GetPriceRequest, 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetPriceReply)
 	err := c.cc.Invoke(ctx, PriceService_GetPrice_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *priceServiceClient) GetPrices(ctx context.Context, in *GetPricesRequest, opts ...grpc.CallOption) (*GetPricesReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPricesReply)
+	err := c.cc.Invoke(ctx, PriceService_GetPrices_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +88,7 @@ type PriceService_StreamPricesClient = grpc.ServerStreamingClient[StreamPricesRe
 type PriceServiceServer interface {
 	// Standard CRUD operations
 	GetPrice(context.Context, *GetPriceRequest) (*GetPriceReply, error)
+	GetPrices(context.Context, *GetPricesRequest) (*GetPricesReply, error)
 	// Streaming operations
 	StreamPrices(*StreamPricesRequest, grpc.ServerStreamingServer[StreamPricesReply]) error
 	mustEmbedUnimplementedPriceServiceServer()
@@ -90,6 +103,9 @@ type UnimplementedPriceServiceServer struct{}
 
 func (UnimplementedPriceServiceServer) GetPrice(context.Context, *GetPriceRequest) (*GetPriceReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetPrice not implemented")
+}
+func (UnimplementedPriceServiceServer) GetPrices(context.Context, *GetPricesRequest) (*GetPricesReply, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPrices not implemented")
 }
 func (UnimplementedPriceServiceServer) StreamPrices(*StreamPricesRequest, grpc.ServerStreamingServer[StreamPricesReply]) error {
 	return status.Error(codes.Unimplemented, "method StreamPrices not implemented")
@@ -133,6 +149,24 @@ func _PriceService_GetPrice_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PriceService_GetPrices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPricesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PriceServiceServer).GetPrices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PriceService_GetPrices_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PriceServiceServer).GetPrices(ctx, req.(*GetPricesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PriceService_StreamPrices_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(StreamPricesRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -154,6 +188,10 @@ var PriceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPrice",
 			Handler:    _PriceService_GetPrice_Handler,
+		},
+		{
+			MethodName: "GetPrices",
+			Handler:    _PriceService_GetPrices_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

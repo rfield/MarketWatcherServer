@@ -6,6 +6,7 @@ option go_package = "./pb";
 service PriceService {
   // Standard CRUD operations
   rpc GetPrice (GetPriceRequest) returns (GetPriceReply) {}
+  rpc GetPrices (GetPricesRequest) returns (GetPricesReply) {}
 
   // Streaming operations
   rpc StreamPrices (StreamPricesRequest) returns (stream StreamPricesReply) {}
@@ -18,6 +19,14 @@ message GetPriceRequest {
 message GetPriceReply {
   Price price = 1;
 }
+
+message GetPricesRequest {
+  repeated string price_ids = 1;
+} 
+
+message GetPricesReply {
+  repeated Price prices = 1;
+} 
 
 message StreamPricesRequest {
   repeated string price_ids = 1;
