@@ -25,8 +25,7 @@ func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*p
 	return &pb.GetPriceReply{
 		Price: &pb.Price{
 			PriceId: req.GetPriceId(),
-			// Price:   quotes[0].Last,
-			Price: 0.0,
+			Price:   quotes[0].Last,
 		},
 	}, nil
 }
