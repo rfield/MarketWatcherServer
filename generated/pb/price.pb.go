@@ -285,6 +285,7 @@ func (x *StreamPricesReply) GetPrice() *Price {
 	return nil
 }
 
+// Price is a top level message representing an asset price
 type Price struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PriceId       string                 `protobuf:"bytes,1,opt,name=price_id,json=priceId,proto3" json:"price_id,omitempty"`

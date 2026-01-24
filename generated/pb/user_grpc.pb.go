@@ -29,13 +29,20 @@ const (
 // UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// UserService provides user management operations including CRUD operations and authentication.
 type UserServiceClient interface {
 	// Standard CRUD operations
+	// GetUser retrieves a user by ID.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserReply, error)
+	// CreateUser creates a new user.
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserReply, error)
+	// UpdateUser updates an existing user.
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserReply, error)
+	// DeleteUser deletes a user by ID.
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserReply, error)
 	// Additional operations
+	// AuthenticateUser authenticates a user with username and password.
 	// Note that AuthenticateUser() is for demonstration purposed only.
 	// Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
 	AuthenticateUser(ctx context.Context, in *AuthenticateUserRequest, opts ...grpc.CallOption) (*AuthenticateUserReply, error)
@@ -102,13 +109,20 @@ func (c *userServiceClient) AuthenticateUser(ctx context.Context, in *Authentica
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
+//
+// UserService provides user management operations including CRUD operations and authentication.
 type UserServiceServer interface {
 	// Standard CRUD operations
+	// GetUser retrieves a user by ID.
 	GetUser(context.Context, *GetUserRequest) (*GetUserReply, error)
+	// CreateUser creates a new user.
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserReply, error)
+	// UpdateUser updates an existing user.
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserReply, error)
+	// DeleteUser deletes a user by ID.
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserReply, error)
 	// Additional operations
+	// AuthenticateUser authenticates a user with username and password.
 	// Note that AuthenticateUser() is for demonstration purposed only.
 	// Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
 	AuthenticateUser(context.Context, *AuthenticateUserRequest) (*AuthenticateUserReply, error)
