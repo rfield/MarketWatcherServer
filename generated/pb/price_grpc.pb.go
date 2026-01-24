@@ -27,9 +27,13 @@ const (
 // PriceServiceClient is the client API for PriceService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// PriceService provides operations for retrieving and streaming price data.
 type PriceServiceClient interface {
 	// Standard CRUD operations
+	// GetPrice retrieves a price by ID, typically a ticker symbol or product code.
 	GetPrice(ctx context.Context, in *GetPriceRequest, opts ...grpc.CallOption) (*GetPriceReply, error)
+	// GetPrices retrieves multiple prices by their IDs.
 	GetPrices(ctx context.Context, in *GetPricesRequest, opts ...grpc.CallOption) (*GetPricesReply, error)
 	// Streaming operations
 	StreamPrices(ctx context.Context, in *StreamPricesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[StreamPricesReply], error)
@@ -85,9 +89,13 @@ type PriceService_StreamPricesClient = grpc.ServerStreamingClient[StreamPricesRe
 // PriceServiceServer is the server API for PriceService service.
 // All implementations must embed UnimplementedPriceServiceServer
 // for forward compatibility.
+//
+// PriceService provides operations for retrieving and streaming price data.
 type PriceServiceServer interface {
 	// Standard CRUD operations
+	// GetPrice retrieves a price by ID, typically a ticker symbol or product code.
 	GetPrice(context.Context, *GetPriceRequest) (*GetPriceReply, error)
+	// GetPrices retrieves multiple prices by their IDs.
 	GetPrices(context.Context, *GetPricesRequest) (*GetPricesReply, error)
 	// Streaming operations
 	StreamPrices(*StreamPricesRequest, grpc.ServerStreamingServer[StreamPricesReply]) error

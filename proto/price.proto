@@ -3,9 +3,13 @@ syntax="proto3";
 package price;
 
 option go_package = "./pb";
+
+// PriceService provides operations for retrieving and streaming price data.
 service PriceService {
   // Standard CRUD operations
+  // GetPrice retrieves a price by ID, typically a ticker symbol or product code.
   rpc GetPrice (GetPriceRequest) returns (GetPriceReply) {}
+  // GetPrices retrieves multiple prices by their IDs.
   rpc GetPrices (GetPricesRequest) returns (GetPricesReply) {}
 
   // Streaming operations
@@ -36,6 +40,7 @@ message StreamPricesReply {
   Price price = 1;
 }
 
+// Price is a top level message representing an asset price
 message Price {
   string price_id = 1;
   double price = 2;

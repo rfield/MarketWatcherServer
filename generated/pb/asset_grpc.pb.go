@@ -25,8 +25,12 @@ const (
 // AssetServiceClient is the client API for AssetService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// AssetService provides operations for managing user assets.
 type AssetServiceClient interface {
 	// Additional operations
+	// ListAssetsForUser retrieves all assets associated with a specific user.
+	// The list will reflect holdings across all accounts for the user.
 	ListAssetsForUser(ctx context.Context, in *ListAssetsForUserRequest, opts ...grpc.CallOption) (*ListAssetsForUserReply, error)
 }
 
@@ -51,8 +55,12 @@ func (c *assetServiceClient) ListAssetsForUser(ctx context.Context, in *ListAsse
 // AssetServiceServer is the server API for AssetService service.
 // All implementations must embed UnimplementedAssetServiceServer
 // for forward compatibility.
+//
+// AssetService provides operations for managing user assets.
 type AssetServiceServer interface {
 	// Additional operations
+	// ListAssetsForUser retrieves all assets associated with a specific user.
+	// The list will reflect holdings across all accounts for the user.
 	ListAssetsForUser(context.Context, *ListAssetsForUserRequest) (*ListAssetsForUserReply, error)
 	mustEmbedUnimplementedAssetServiceServer()
 }

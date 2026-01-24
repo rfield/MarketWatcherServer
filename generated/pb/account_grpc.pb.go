@@ -26,13 +26,16 @@ const (
 // AccountServiceClient is the client API for AccountService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// AccountService provides account management operations including retrieval and authentication.
 type AccountServiceClient interface {
 	// Standard CRUD operations
 	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*GetAccountReply, error)
 	// Additional operations
 	// Note: The Login method would typically involve authentication and session management,
 	// which are not covered here.
-	// This is just a placeholder for demonstration purposes.
+	// This is just a placeholder for demonstration purposes, and is deprecated
+	// in favor of using the UserService's AuthenticateUser method.
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
 }
 
@@ -67,13 +70,16 @@ func (c *accountServiceClient) Login(ctx context.Context, in *LoginRequest, opts
 // AccountServiceServer is the server API for AccountService service.
 // All implementations must embed UnimplementedAccountServiceServer
 // for forward compatibility.
+//
+// AccountService provides account management operations including retrieval and authentication.
 type AccountServiceServer interface {
 	// Standard CRUD operations
 	GetAccount(context.Context, *GetAccountRequest) (*GetAccountReply, error)
 	// Additional operations
 	// Note: The Login method would typically involve authentication and session management,
 	// which are not covered here.
-	// This is just a placeholder for demonstration purposes.
+	// This is just a placeholder for demonstration purposes, and is deprecated
+	// in favor of using the UserService's AuthenticateUser method.
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }

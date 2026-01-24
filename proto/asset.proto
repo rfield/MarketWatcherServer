@@ -4,10 +4,13 @@ package account;
 
 option go_package = "./pb";
 
+// AssetService provides operations for managing user assets.
 service AssetService {
   // Standard CRUD operations
 
   // Additional operations
+  // ListAssetsForUser retrieves all assets associated with a specific user.
+  // The list will reflect holdings across all accounts for the user.
   rpc ListAssetsForUser (ListAssetsForUserRequest) returns (ListAssetsForUserReply) {}
 }
 
@@ -19,6 +22,7 @@ message ListAssetsForUserReply {
     repeated Asset assets = 1;
 }
 
+// Asset is a message representing an asset in a user's account
 message Asset {
   string user_id = 1;
   string account_name = 2;

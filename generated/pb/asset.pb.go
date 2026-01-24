@@ -109,6 +109,7 @@ func (x *ListAssetsForUserReply) GetAssets() []*Asset {
 	return nil
 }
 
+// Asset is a message representing an asset in a user's account
 type Asset struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`

@@ -4,14 +4,20 @@ package user;
 
 option go_package = "./pb";
 
+// UserService provides user management operations including CRUD operations and authentication.
 service UserService {
     // Standard CRUD operations
+    // GetUser retrieves a user by ID.
     rpc GetUser (GetUserRequest) returns (GetUserReply) {}
+    // CreateUser creates a new user.
     rpc CreateUser (CreateUserRequest) returns (CreateUserReply) {}
+    // UpdateUser updates an existing user.
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply) {}
+    // DeleteUser deletes a user by ID.
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply) {}
 
     // Additional operations
+    // AuthenticateUser authenticates a user with username and password.
     // Note that AuthenticateUser() is for demonstration purposed only. 
     // Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
     rpc AuthenticateUser (AuthenticateUserRequest) returns (AuthenticateUserReply) {}

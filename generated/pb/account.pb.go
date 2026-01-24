@@ -109,6 +109,7 @@ func (x *GetAccountReply) GetAccount() *Account {
 	return nil
 }
 
+// Account represents a user's account information. Users may have multiple accounts.
 type Account struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	AccountId     string                 `protobuf:"bytes,1,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
