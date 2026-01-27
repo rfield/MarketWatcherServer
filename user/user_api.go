@@ -18,6 +18,7 @@ func (s *UserServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.G
 	if err != nil {
 		return nil, err
 	}
+	u.Name = "users/" + u.UserId
 
 	log.Printf("GetUser() - returning: %v", u)
 	return &pb.GetUserReply{

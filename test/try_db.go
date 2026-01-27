@@ -6,8 +6,7 @@ import (
 	"log"
 
 	_ "github.com/lib/pq"
-	"rjfield.com/backend/generated/pb"
-	db "rjfield.com/backend/user"
+	"rjfield.com/backend/db" // Adjust the import path as necessary
 )
 
 // const (
@@ -36,21 +35,33 @@ func main() {
 	// }
 	// fmt.Println("Successfully connected to the database!")
 
-	user := &pb.User{
-		Credentials: &pb.Credentials{
-			Username:     "bob",
-			PasswordHash: "securepassword",
-		},
-		GivenName:  "Bob",
-		FamilyName: "Wonderland",
-		Email:      "bob.wonderland@example.com",
-	}
-
-	createdUser, err := db.CreateUser(user)
+	assets, err := db.ListAssets("b0159a28-5a03-403f-ba2f-192b41a32d9a", "fa87e1d3-2e26-45cd-a708-1e72fb02f9a3")
 	if err != nil {
-		log.Fatalf("Error creating user: %v", err)
+		log.Fatalf("Error fetching assets: %v", err)
 	}
-	fmt.Printf("Created user: %+v\n", createdUser)
+	fmt.Printf("Fetched assets: %+v\n", assets)
+
+	// accounts, err := db.ListAccounts("b0159a28-5a03-403f-ba2f-192b41a32d9a")
+	// if err != nil {
+	// 	log.Fatalf("Error fetching accounts: %v", err)
+	// }
+	// fmt.Printf("Fetched accounts: %+v\n", accounts)
+
+	// user := &pb.User{
+	// 	Credentials: &pb.Credentials{
+	// 		Username:     "bob",
+	// 		PasswordHash: "securepassword",
+	// 	},
+	// 	GivenName:  "Bob",
+	// 	FamilyName: "Wonderland",
+	// 	Email:      "bob.wonderland@example.com",
+	// }
+
+	// createdUser, err := db.CreateUser(user)
+	// if err != nil {
+	// 	log.Fatalf("Error creating user: %v", err)
+	// }
+	// fmt.Printf("Created user: %+v\n", createdUser)
 
 	// // --- Insert a row ---
 	// insertRow(db, "joe1", "bar", "Joe", "Schmoe", "jschmoe@example.com")

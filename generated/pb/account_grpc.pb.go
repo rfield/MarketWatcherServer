@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             v6.33.1
-// source: proto/account.proto
+// source: account.proto
 
 package pb
 
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountService_GetAccount_FullMethodName = "/account.AccountService/GetAccount"
-	AccountService_Login_FullMethodName      = "/account.AccountService/Login"
+	AccountService_GetAccount_FullMethodName   = "/account.AccountService/GetAccount"
+	AccountService_ListAccounts_FullMethodName = "/account.AccountService/ListAccounts"
 )
 
 // AccountServiceClient is the client API for AccountService service.
@@ -30,13 +30,10 @@ const (
 // AccountService provides account management operations including retrieval and authentication.
 type AccountServiceClient interface {
 	// Standard CRUD operations
+	// GetAccount retrieves an account by ID.
 	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*GetAccountReply, error)
-	// Additional operations
-	// Note: The Login method would typically involve authentication and session management,
-	// which are not covered here.
-	// This is just a placeholder for demonstration purposes, and is deprecated
-	// in favor of using the UserService's AuthenticateUser method.
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
+	// ListAccounts retrieves a (paginated) list of all accounts for a user
+	ListAccounts(ctx context.Context, in *ListAccountsRequest, opts ...grpc.CallOption) (*ListAccountsReply, error)
 }
 
 type accountServiceClient struct {
@@ -57,10 +54,10 @@ func (c *accountServiceClient) GetAccount(ctx context.Context, in *GetAccountReq
 	return out, nil
 }
 
-func (c *accountServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error) {
+func (c *accountServiceClient) ListAccounts(ctx context.Context, in *ListAccountsRequest, opts ...grpc.CallOption) (*ListAccountsReply, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LoginReply)
-	err := c.cc.Invoke(ctx, AccountService_Login_FullMethodName, in, out, cOpts...)
+	out := new(ListAccountsReply)
+	err := c.cc.Invoke(ctx, AccountService_ListAccounts_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,13 +71,10 @@ func (c *accountServiceClient) Login(ctx context.Context, in *LoginRequest, opts
 // AccountService provides account management operations including retrieval and authentication.
 type AccountServiceServer interface {
 	// Standard CRUD operations
+	// GetAccount retrieves an account by ID.
 	GetAccount(context.Context, *GetAccountRequest) (*GetAccountReply, error)
-	// Additional operations
-	// Note: The Login method would typically involve authentication and session management,
-	// which are not covered here.
-	// This is just a placeholder for demonstration purposes, and is deprecated
-	// in favor of using the UserService's AuthenticateUser method.
-	Login(context.Context, *LoginRequest) (*LoginReply, error)
+	// ListAccounts retrieves a (paginated) list of all accounts for a user
+	ListAccounts(context.Context, *ListAccountsRequest) (*ListAccountsReply, error)
 	mustEmbedUnimplementedAccountServiceServer()
 }
 
@@ -94,8 +88,8 @@ type UnimplementedAccountServiceServer struct{}
 func (UnimplementedAccountServiceServer) GetAccount(context.Context, *GetAccountRequest) (*GetAccountReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetAccount not implemented")
 }
-func (UnimplementedAccountServiceServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
-	return nil, status.Error(codes.Unimplemented, "method Login not implemented")
+func (UnimplementedAccountServiceServer) ListAccounts(context.Context, *ListAccountsRequest) (*ListAccountsReply, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAccounts not implemented")
 }
 func (UnimplementedAccountServiceServer) mustEmbedUnimplementedAccountServiceServer() {}
 func (UnimplementedAccountServiceServer) testEmbeddedByValue()                        {}
@@ -136,20 +130,20 @@ func _AccountService_GetAccount_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AccountService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
+func _AccountService_ListAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAccountsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServiceServer).Login(ctx, in)
+		return srv.(AccountServiceServer).ListAccounts(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AccountService_Login_FullMethodName,
+		FullMethod: AccountService_ListAccounts_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServiceServer).Login(ctx, req.(*LoginRequest))
+		return srv.(AccountServiceServer).ListAccounts(ctx, req.(*ListAccountsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -166,10 +160,10 @@ var AccountService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AccountService_GetAccount_Handler,
 		},
 		{
-			MethodName: "Login",
-			Handler:    _AccountService_Login_Handler,
+			MethodName: "ListAccounts",
+			Handler:    _AccountService_ListAccounts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/account.proto",
+	Metadata: "account.proto",
 }

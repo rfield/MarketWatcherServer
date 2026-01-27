@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"rjfield.com/backend/db"
 	"rjfield.com/backend/generated/pb"
 )
 
@@ -22,11 +23,19 @@ func (s *AccountServer) GetAccount(ctx context.Context, req *pb.GetAccountReques
 	}, nil
 }
 
-// Deprecated: Use user.proto's AuthenticateUser rpc instead.
-func (s *AccountServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
-	log.Printf("Login() - received: %s / %s", req.GetUsername(), req.GetPassword())
-	return &pb.LoginReply{
-		Token:     "sample_token",
-		AccountId: "12345",
+// ListAccounts retrieves all accounts for the given user ID.
+func (s *AccountServer) ListAccounts(ctx context.Context, req *pb.ListAccountsRequest) (*pb.ListAccountsReply, error) {
+	log.Printf("ListAccounts() - received: %v", req.GetParent())
+
+	user_id := db.UserIDFromResourceName(req.GetParent())
+
+	accounts, err := db.ListAccounts(user_id)
+	if err != nil {
+		log.Printf("ListAccounts() - error fetching accounts for user %s: %v", req.GetParent(), err)
+		return nil, err
+	}
+	log.Printf("ListAccounts() - fetched %d accounts for user %s", len(accounts), req.GetParent())
+	return &pb.ListAccountsReply{
+		Accounts: accounts,
 	}, nil
 }

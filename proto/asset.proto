@@ -4,9 +4,13 @@ package account;
 
 option go_package = "./pb";
 
+import "google/api/resource.proto";
+
+
 // AssetService provides operations for managing user assets.
 service AssetService {
   // Standard CRUD operations
+  rpc ListAssets (ListAssetsRequest) returns (ListAssetsReply) {}
 
   // Additional operations
   // ListAssetsForUser retrieves all assets associated with a specific user.
@@ -14,18 +18,36 @@ service AssetService {
   rpc ListAssetsForUser (ListAssetsForUserRequest) returns (ListAssetsForUserReply) {}
 }
 
+message ListAssetsRequest {
+    string parent = 1 [(google.api.resource_reference) = {
+      type: "rjfield.com/backend/Account"
+    }];   // The account resource name, e.g., "users/{user_id}/accounts/{account_id}"
+}
+
+message ListAssetsReply {
+  repeated Asset assets = 1;
+}
+
 message ListAssetsForUserRequest {
   string user_id = 1;
 }
 
 message ListAssetsForUserReply {
-    repeated Asset assets = 1;
+  repeated Asset assets = 1;
 }
 
 // Asset is a message representing an asset in a user's account
 message Asset {
-  string user_id = 1;
-  string account_name = 2;
-  string ticker = 3;
-  double holding_amount = 4;
+  option (google.api.resource) = {
+    type   : "rjfield.com/backend/Asset"
+    pattern: "users/{user_id}/accounts/{account_id}/assets/{asset_id}"
+  };
+  string name = 1; // Fully-qualified resource name in the format "users/{user_id}/accounts/{account_id}/assets/{asset_id}"
+
+  // TODO: Add remove user_id  and account_name if possible, since they are redundant with the resource name
+  
+  string user_id        = 2;
+  string account_name   = 3;
+  string ticker         = 4;
+  double holding_amount = 5;
 }

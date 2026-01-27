@@ -3,6 +3,7 @@ module rjfield.com/backend
 go 1.25
 
 require (
+	google.golang.org/genproto/googleapis/api v0.0.0-20251022142026-3a174f9686a8
 	google.golang.org/grpc v1.77.0
 	google.golang.org/protobuf v1.36.10
 )

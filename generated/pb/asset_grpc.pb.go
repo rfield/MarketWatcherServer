@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.0
 // - protoc             v6.33.1
-// source: proto/asset.proto
+// source: asset.proto
 
 package pb
 
@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	AssetService_ListAssets_FullMethodName        = "/account.AssetService/ListAssets"
 	AssetService_ListAssetsForUser_FullMethodName = "/account.AssetService/ListAssetsForUser"
 )
 
@@ -28,6 +29,8 @@ const (
 //
 // AssetService provides operations for managing user assets.
 type AssetServiceClient interface {
+	// Standard CRUD operations
+	ListAssets(ctx context.Context, in *ListAssetsRequest, opts ...grpc.CallOption) (*ListAssetsReply, error)
 	// Additional operations
 	// ListAssetsForUser retrieves all assets associated with a specific user.
 	// The list will reflect holdings across all accounts for the user.
@@ -40,6 +43,16 @@ type assetServiceClient struct {
 
 func NewAssetServiceClient(cc grpc.ClientConnInterface) AssetServiceClient {
 	return &assetServiceClient{cc}
+}
+
+func (c *assetServiceClient) ListAssets(ctx context.Context, in *ListAssetsRequest, opts ...grpc.CallOption) (*ListAssetsReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAssetsReply)
+	err := c.cc.Invoke(ctx, AssetService_ListAssets_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *assetServiceClient) ListAssetsForUser(ctx context.Context, in *ListAssetsForUserRequest, opts ...grpc.CallOption) (*ListAssetsForUserReply, error) {
@@ -58,6 +71,8 @@ func (c *assetServiceClient) ListAssetsForUser(ctx context.Context, in *ListAsse
 //
 // AssetService provides operations for managing user assets.
 type AssetServiceServer interface {
+	// Standard CRUD operations
+	ListAssets(context.Context, *ListAssetsRequest) (*ListAssetsReply, error)
 	// Additional operations
 	// ListAssetsForUser retrieves all assets associated with a specific user.
 	// The list will reflect holdings across all accounts for the user.
@@ -72,6 +87,9 @@ type AssetServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAssetServiceServer struct{}
 
+func (UnimplementedAssetServiceServer) ListAssets(context.Context, *ListAssetsRequest) (*ListAssetsReply, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAssets not implemented")
+}
 func (UnimplementedAssetServiceServer) ListAssetsForUser(context.Context, *ListAssetsForUserRequest) (*ListAssetsForUserReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListAssetsForUser not implemented")
 }
@@ -94,6 +112,24 @@ func RegisterAssetServiceServer(s grpc.ServiceRegistrar, srv AssetServiceServer)
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&AssetService_ServiceDesc, srv)
+}
+
+func _AssetService_ListAssets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAssetsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AssetServiceServer).ListAssets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AssetService_ListAssets_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AssetServiceServer).ListAssets(ctx, req.(*ListAssetsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _AssetService_ListAssetsForUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -122,10 +158,14 @@ var AssetService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AssetServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "ListAssets",
+			Handler:    _AssetService_ListAssets_Handler,
+		},
+		{
 			MethodName: "ListAssetsForUser",
 			Handler:    _AssetService_ListAssetsForUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/asset.proto",
+	Metadata: "asset.proto",
 }
