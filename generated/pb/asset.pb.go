@@ -2,11 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.36.10
 // 	protoc        v6.33.1
-// source: proto/asset.proto
+// source: asset.proto
 
 package pb
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -21,6 +22,94 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ListAssetsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Parent        string                 `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"` // The account resource name, e.g., "users/{user_id}/accounts/{account_id}"
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAssetsRequest) Reset() {
+	*x = ListAssetsRequest{}
+	mi := &file_asset_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAssetsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAssetsRequest) ProtoMessage() {}
+
+func (x *ListAssetsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_asset_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAssetsRequest.ProtoReflect.Descriptor instead.
+func (*ListAssetsRequest) Descriptor() ([]byte, []int) {
+	return file_asset_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ListAssetsRequest) GetParent() string {
+	if x != nil {
+		return x.Parent
+	}
+	return ""
+}
+
+type ListAssetsReply struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Assets        []*Asset               `protobuf:"bytes,1,rep,name=assets,proto3" json:"assets,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAssetsReply) Reset() {
+	*x = ListAssetsReply{}
+	mi := &file_asset_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAssetsReply) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAssetsReply) ProtoMessage() {}
+
+func (x *ListAssetsReply) ProtoReflect() protoreflect.Message {
+	mi := &file_asset_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAssetsReply.ProtoReflect.Descriptor instead.
+func (*ListAssetsReply) Descriptor() ([]byte, []int) {
+	return file_asset_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ListAssetsReply) GetAssets() []*Asset {
+	if x != nil {
+		return x.Assets
+	}
+	return nil
+}
+
 type ListAssetsForUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
@@ -30,7 +119,7 @@ type ListAssetsForUserRequest struct {
 
 func (x *ListAssetsForUserRequest) Reset() {
 	*x = ListAssetsForUserRequest{}
-	mi := &file_proto_asset_proto_msgTypes[0]
+	mi := &file_asset_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +131,7 @@ func (x *ListAssetsForUserRequest) String() string {
 func (*ListAssetsForUserRequest) ProtoMessage() {}
 
 func (x *ListAssetsForUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_asset_proto_msgTypes[0]
+	mi := &file_asset_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +144,7 @@ func (x *ListAssetsForUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAssetsForUserRequest.ProtoReflect.Descriptor instead.
 func (*ListAssetsForUserRequest) Descriptor() ([]byte, []int) {
-	return file_proto_asset_proto_rawDescGZIP(), []int{0}
+	return file_asset_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListAssetsForUserRequest) GetUserId() string {
@@ -74,7 +163,7 @@ type ListAssetsForUserReply struct {
 
 func (x *ListAssetsForUserReply) Reset() {
 	*x = ListAssetsForUserReply{}
-	mi := &file_proto_asset_proto_msgTypes[1]
+	mi := &file_asset_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +175,7 @@ func (x *ListAssetsForUserReply) String() string {
 func (*ListAssetsForUserReply) ProtoMessage() {}
 
 func (x *ListAssetsForUserReply) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_asset_proto_msgTypes[1]
+	mi := &file_asset_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,7 +188,7 @@ func (x *ListAssetsForUserReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAssetsForUserReply.ProtoReflect.Descriptor instead.
 func (*ListAssetsForUserReply) Descriptor() ([]byte, []int) {
-	return file_proto_asset_proto_rawDescGZIP(), []int{1}
+	return file_asset_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListAssetsForUserReply) GetAssets() []*Asset {
@@ -112,17 +201,18 @@ func (x *ListAssetsForUserReply) GetAssets() []*Asset {
 // Asset is a message representing an asset in a user's account
 type Asset struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	AccountName   string                 `protobuf:"bytes,2,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"`
-	Ticker        string                 `protobuf:"bytes,3,opt,name=ticker,proto3" json:"ticker,omitempty"`
-	HoldingAmount float64                `protobuf:"fixed64,4,opt,name=holding_amount,json=holdingAmount,proto3" json:"holding_amount,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // Fully-qualified resource name in the format "users/{user_id}/accounts/{account_id}/assets/{asset_id}"
+	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	AccountName   string                 `protobuf:"bytes,3,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"`
+	Ticker        string                 `protobuf:"bytes,4,opt,name=ticker,proto3" json:"ticker,omitempty"`
+	HoldingAmount float64                `protobuf:"fixed64,5,opt,name=holding_amount,json=holdingAmount,proto3" json:"holding_amount,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Asset) Reset() {
 	*x = Asset{}
-	mi := &file_proto_asset_proto_msgTypes[2]
+	mi := &file_asset_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -134,7 +224,7 @@ func (x *Asset) String() string {
 func (*Asset) ProtoMessage() {}
 
 func (x *Asset) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_asset_proto_msgTypes[2]
+	mi := &file_asset_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -147,7 +237,14 @@ func (x *Asset) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Asset.ProtoReflect.Descriptor instead.
 func (*Asset) Descriptor() ([]byte, []int) {
-	return file_proto_asset_proto_rawDescGZIP(), []int{2}
+	return file_asset_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *Asset) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
 }
 
 func (x *Asset) GetUserId() string {
@@ -178,72 +275,86 @@ func (x *Asset) GetHoldingAmount() float64 {
 	return 0
 }
 
-var File_proto_asset_proto protoreflect.FileDescriptor
+var File_asset_proto protoreflect.FileDescriptor
 
-const file_proto_asset_proto_rawDesc = "" +
+const file_asset_proto_rawDesc = "" +
 	"\n" +
-	"\x11proto/asset.proto\x12\aaccount\"3\n" +
+	"\vasset.proto\x12\aaccount\x1a\x19google/api/resource.proto\"M\n" +
+	"\x11ListAssetsRequest\x128\n" +
+	"\x06parent\x18\x01 \x01(\tB \xfaA\x1d\n" +
+	"\x1brjfield.com/backend/AccountR\x06parent\"9\n" +
+	"\x0fListAssetsReply\x12&\n" +
+	"\x06assets\x18\x01 \x03(\v2\x0e.account.AssetR\x06assets\"3\n" +
 	"\x18ListAssetsForUserRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\"@\n" +
 	"\x16ListAssetsForUserReply\x12&\n" +
-	"\x06assets\x18\x01 \x03(\v2\x0e.account.AssetR\x06assets\"\x82\x01\n" +
-	"\x05Asset\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12!\n" +
-	"\faccount_name\x18\x02 \x01(\tR\vaccountName\x12\x16\n" +
-	"\x06ticker\x18\x03 \x01(\tR\x06ticker\x12%\n" +
-	"\x0eholding_amount\x18\x04 \x01(\x01R\rholdingAmount2i\n" +
-	"\fAssetService\x12Y\n" +
+	"\x06assets\x18\x01 \x03(\v2\x0e.account.AssetR\x06assets\"\xef\x01\n" +
+	"\x05Asset\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12!\n" +
+	"\faccount_name\x18\x03 \x01(\tR\vaccountName\x12\x16\n" +
+	"\x06ticker\x18\x04 \x01(\tR\x06ticker\x12%\n" +
+	"\x0eholding_amount\x18\x05 \x01(\x01R\rholdingAmount:W\xeaAT\n" +
+	"\x19rjfield.com/backend/Asset\x127users/{user_id}/accounts/{account_id}/assets/{asset_id}2\xaf\x01\n" +
+	"\fAssetService\x12D\n" +
+	"\n" +
+	"ListAssets\x12\x1a.account.ListAssetsRequest\x1a\x18.account.ListAssetsReply\"\x00\x12Y\n" +
 	"\x11ListAssetsForUser\x12!.account.ListAssetsForUserRequest\x1a\x1f.account.ListAssetsForUserReply\"\x00B\x06Z\x04./pbb\x06proto3"
 
 var (
-	file_proto_asset_proto_rawDescOnce sync.Once
-	file_proto_asset_proto_rawDescData []byte
+	file_asset_proto_rawDescOnce sync.Once
+	file_asset_proto_rawDescData []byte
 )
 
-func file_proto_asset_proto_rawDescGZIP() []byte {
-	file_proto_asset_proto_rawDescOnce.Do(func() {
-		file_proto_asset_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_asset_proto_rawDesc), len(file_proto_asset_proto_rawDesc)))
+func file_asset_proto_rawDescGZIP() []byte {
+	file_asset_proto_rawDescOnce.Do(func() {
+		file_asset_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_asset_proto_rawDesc), len(file_asset_proto_rawDesc)))
 	})
-	return file_proto_asset_proto_rawDescData
+	return file_asset_proto_rawDescData
 }
 
-var file_proto_asset_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_proto_asset_proto_goTypes = []any{
-	(*ListAssetsForUserRequest)(nil), // 0: account.ListAssetsForUserRequest
-	(*ListAssetsForUserReply)(nil),   // 1: account.ListAssetsForUserReply
-	(*Asset)(nil),                    // 2: account.Asset
+var file_asset_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_asset_proto_goTypes = []any{
+	(*ListAssetsRequest)(nil),        // 0: account.ListAssetsRequest
+	(*ListAssetsReply)(nil),          // 1: account.ListAssetsReply
+	(*ListAssetsForUserRequest)(nil), // 2: account.ListAssetsForUserRequest
+	(*ListAssetsForUserReply)(nil),   // 3: account.ListAssetsForUserReply
+	(*Asset)(nil),                    // 4: account.Asset
 }
-var file_proto_asset_proto_depIdxs = []int32{
-	2, // 0: account.ListAssetsForUserReply.assets:type_name -> account.Asset
-	0, // 1: account.AssetService.ListAssetsForUser:input_type -> account.ListAssetsForUserRequest
-	1, // 2: account.AssetService.ListAssetsForUser:output_type -> account.ListAssetsForUserReply
-	2, // [2:3] is the sub-list for method output_type
-	1, // [1:2] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+var file_asset_proto_depIdxs = []int32{
+	4, // 0: account.ListAssetsReply.assets:type_name -> account.Asset
+	4, // 1: account.ListAssetsForUserReply.assets:type_name -> account.Asset
+	0, // 2: account.AssetService.ListAssets:input_type -> account.ListAssetsRequest
+	2, // 3: account.AssetService.ListAssetsForUser:input_type -> account.ListAssetsForUserRequest
+	1, // 4: account.AssetService.ListAssets:output_type -> account.ListAssetsReply
+	3, // 5: account.AssetService.ListAssetsForUser:output_type -> account.ListAssetsForUserReply
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_proto_asset_proto_init() }
-func file_proto_asset_proto_init() {
-	if File_proto_asset_proto != nil {
+func init() { file_asset_proto_init() }
+func file_asset_proto_init() {
+	if File_asset_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_asset_proto_rawDesc), len(file_proto_asset_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_asset_proto_rawDesc), len(file_asset_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_asset_proto_goTypes,
-		DependencyIndexes: file_proto_asset_proto_depIdxs,
-		MessageInfos:      file_proto_asset_proto_msgTypes,
+		GoTypes:           file_asset_proto_goTypes,
+		DependencyIndexes: file_asset_proto_depIdxs,
+		MessageInfos:      file_asset_proto_msgTypes,
 	}.Build()
-	File_proto_asset_proto = out.File
-	file_proto_asset_proto_goTypes = nil
-	file_proto_asset_proto_depIdxs = nil
+	File_asset_proto = out.File
+	file_asset_proto_goTypes = nil
+	file_asset_proto_depIdxs = nil
 }

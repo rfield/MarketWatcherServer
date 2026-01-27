@@ -26,3 +26,15 @@ bin/mkt_server
 ## References
 
 [MarketData.App APIs for Real-time stock prices](https://www.marketdata.app/sdk/go/golang-stock-api/real-time-stock-api/)
+
+[Google API Design Guide](https://docs.cloud.google.com/apis/design)
+
+[Google API Improvement Proposals](https://google.aip.dev/)
+
+[gRPC](https://grpc.io/docs/what-is-grpc/introduction/)
+
+## Google Protobuf Dependencies
+
+[resource.proto in Google's Github](https://github.com/googleapis/googleapis/blob/master/google/api/resource.proto)
+
+[descriptor.proto in Google's Github](https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto)

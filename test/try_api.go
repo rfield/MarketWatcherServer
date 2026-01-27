@@ -1,32 +1,32 @@
 package main
 
-import (
-	"fmt"
-	"log"
+// import (
+// 	"fmt"
+// 	"log"
 
-	api "github.com/MarketDataApp/sdk-go"
-)
+// 	api "github.com/MarketDataApp/sdk-go"
+// )
 
-func main() {
-	client, err := api.GetClient()
-	if err != nil {
-		log.Fatalf("Failed to get client: %v", err)
-	}
-	client.Debug(true)    // Enable debug mode to log detailed request and response information
-	client.SetTimeout(30) // Set timeout to 30 seconds
-	quotes, err := client.StockQuotes().Symbol("AAPL").Get()
-	// .StockQuotes().Symbol("AAPL").Get()
+// func main() {
+// 	client, err := api.GetClient()
+// 	if err != nil {
+// 		log.Fatalf("Failed to get client: %v", err)
+// 	}
+// 	client.Debug(true)    // Enable debug mode to log detailed request and response information
+// 	client.SetTimeout(30) // Set timeout to 30 seconds
+// 	quotes, err := client.StockQuotes().Symbol("AAPL").Get()
+// 	// .StockQuotes().Symbol("AAPL").Get()
 
-	// quotes, err := api.StockQuote().Symbol("AAPL").Get()
-	if err != nil {
-		log.Fatalf("Failed to get stock quotes: %v", err)
-	}
+// 	// quotes, err := api.StockQuote().Symbol("AAPL").Get()
+// 	if err != nil {
+// 		log.Fatalf("Failed to get stock quotes: %v", err)
+// 	}
 
-	// Loop over the quotes and print them out.
-	for _, quote := range quotes {
-		fmt.Println(quote)
-	}
-}
+// 	// Loop over the quotes and print them out.
+// 	for _, quote := range quotes {
+// 		fmt.Println(quote)
+// 	}
+// }
 
 // 	finnhub "github.com/Finnhub-Stock-API/finnhub-go/v2"
 // )

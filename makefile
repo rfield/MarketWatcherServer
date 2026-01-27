@@ -9,6 +9,7 @@ build: build_protos
 build_protos:
 	protoc --go_out=$(PROTO_OUT_DIR) \
 	--go-grpc_out=$(PROTO_OUT_DIR) \
+	--proto_path=$(PROTO_SRC_DIR) \
 	$(PROTO_SRC_DIR)/*.proto
 
 .PHONY: clean
