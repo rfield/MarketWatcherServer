@@ -44,4 +44,5 @@ message StreamPricesReply {
 message Price {
   string price_id = 1;
   double price = 2;
+  double price_change = 3;
 }
