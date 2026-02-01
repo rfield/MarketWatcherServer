@@ -290,6 +290,7 @@ type Price struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PriceId       string                 `protobuf:"bytes,1,opt,name=price_id,json=priceId,proto3" json:"price_id,omitempty"`
 	Price         float64                `protobuf:"fixed64,2,opt,name=price,proto3" json:"price,omitempty"`
+	PriceChange   float64                `protobuf:"fixed64,3,opt,name=price_change,json=priceChange,proto3" json:"price_change,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -338,6 +339,13 @@ func (x *Price) GetPrice() float64 {
 	return 0
 }
 
+func (x *Price) GetPriceChange() float64 {
+	if x != nil {
+		return x.PriceChange
+	}
+	return 0
+}
+
 var File_price_proto protoreflect.FileDescriptor
 
 const file_price_proto_rawDesc = "" +
@@ -354,10 +362,11 @@ const file_price_proto_rawDesc = "" +
 	"\x13StreamPricesRequest\x12\x1b\n" +
 	"\tprice_ids\x18\x01 \x03(\tR\bpriceIds\"7\n" +
 	"\x11StreamPricesReply\x12\"\n" +
-	"\x05price\x18\x01 \x01(\v2\f.price.PriceR\x05price\"8\n" +
+	"\x05price\x18\x01 \x01(\v2\f.price.PriceR\x05price\"[\n" +
 	"\x05Price\x12\x19\n" +
 	"\bprice_id\x18\x01 \x01(\tR\apriceId\x12\x14\n" +
-	"\x05price\x18\x02 \x01(\x01R\x05price2\xd3\x01\n" +
+	"\x05price\x18\x02 \x01(\x01R\x05price\x12!\n" +
+	"\fprice_change\x18\x03 \x01(\x01R\vpriceChange2\xd3\x01\n" +
 	"\fPriceService\x12:\n" +
 	"\bGetPrice\x12\x16.price.GetPriceRequest\x1a\x14.price.GetPriceReply\"\x00\x12=\n" +
 	"\tGetPrices\x12\x17.price.GetPricesRequest\x1a\x15.price.GetPricesReply\"\x00\x12H\n" +

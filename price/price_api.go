@@ -22,10 +22,15 @@ func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*p
 		return nil, err
 	}
 	log.Printf("GetPrice() - Fetched stock quote for %s: %v", req.GetPriceId(), quotes)
+	priceChange := 0.0
+	if quotes[0].Change != nil {
+		priceChange = *quotes[0].Change
+	}
 	return &pb.GetPriceReply{
 		Price: &pb.Price{
-			PriceId: req.GetPriceId(),
-			Price:   quotes[0].Last,
+			PriceId:     req.GetPriceId(),
+			Price:       quotes[0].Last,
+			PriceChange: priceChange,
 		},
 	}, nil
 }
@@ -41,9 +46,14 @@ func (s *PriceServer) GetPrices(ctx context.Context, req *pb.GetPricesRequest) (
 	log.Printf("GetPrice() - Fetched stock quote for %s: %v", req.GetPriceIds(), quotes)
 	p := make([]*pb.Price, 0, len(quotes))
 	for _, q := range quotes {
+		priceChange := 0.0
+		if q.Change != nil {
+			priceChange = *q.Change
+		}
 		p = append(p, &pb.Price{
-			PriceId: q.Symbol,
-			Price:   q.Last,
+			PriceId:     q.Symbol,
+			Price:       q.Last,
+			PriceChange: priceChange,
 		})
 	}
 	return &pb.GetPricesReply{
@@ -69,9 +79,14 @@ func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceS
 
 		// Map quotes by symbol for easy lookup
 		for _, q := range quotes {
+			priceChange := 0.0
+			if q.Change != nil {
+				priceChange = *q.Change
+			}
 			price := &pb.Price{
-				PriceId: q.Symbol,
-				Price:   q.Last,
+				PriceId:     q.Symbol,
+				Price:       q.Last,
+				PriceChange: priceChange,
 			}
 			if err := stream.Send(&pb.StreamPricesReply{Price: price}); err != nil {
 				return err
