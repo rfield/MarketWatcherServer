@@ -56,8 +56,8 @@ func UpdateUser(u *pb.User) (*pb.User, error) {
 func DeleteUser(id string) (string, error) {
 	return deleteUser(id)
 }
-func ListUsers() ([]*pb.User, error) {
-	return listUsers()
+func ListUsers(pageSize int32, pageToken string) ([]*pb.User, error) {
+	return listUsers(pageSize, pageToken)
 }
 
 // Other User functions

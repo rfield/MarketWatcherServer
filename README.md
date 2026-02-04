@@ -8,7 +8,14 @@ The application is written in Go and is meant to illustrate some interesting fea
 
 You will want to install the [MarketWatcher App](https://github.com/rfield/MarketWatcherApp), and Android application that exercises some of the server's capabilities. 
 
-Additionally, you will need to install Go.
+Additionally, you will need to install Go and the necessary Protobuf code generators:
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+```
 
 The server also depends on a very simple Postgres database for it's list of users and their stock holdings. So you should install Postgres as well. The DDL to create the tables is in the ./sql directory.
 
@@ -38,3 +45,10 @@ bin/mkt_server
 [resource.proto in Google's Github](https://github.com/googleapis/googleapis/blob/master/google/api/resource.proto)
 
 [descriptor.proto in Google's Github](https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto)
+
+Other Google API Dependencies, when using the [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) to create a ReST Proxy for your gRPC Endpoints.
+
+https://github.com/googleapis/googleapis/blob/master/google/api/httpbody.proto
+https://github.com/googleapis/googleapis/blob/master/google/api/http.proto
+https://github.com/googleapis/googleapis/blob/master/google/api/annotations.proto
+https://github.com/googleapis/googleapis/blob/master/google/api/field_behavior.proto

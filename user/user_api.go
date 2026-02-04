@@ -12,6 +12,21 @@ type UserServer struct {
 	pb.UnimplementedUserServiceServer
 }
 
+func (s *UserServer) ListUsers(ctx context.Context, req *pb.ListUsersRequest) (*pb.ListUsersReply, error) {
+	log.Printf("ListUsers() - received: %v", req)
+	users, err := db.ListUsers(req.PageSize, req.PageToken)
+	if err != nil {
+		return nil, err
+	}
+	for _, u := range users {
+		u.Name = "users/" + u.UserId
+	}
+	log.Printf("ListUsers() - returning: %v", users)
+	return &pb.ListUsersReply{
+		Users: users,
+	}, nil
+}
+
 func (s *UserServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
 	log.Printf("GetUser() - received: %v", req.GetUserId())
 	u, err := db.ReadUser(req.UserId)

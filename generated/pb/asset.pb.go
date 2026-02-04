@@ -279,7 +279,7 @@ var File_asset_proto protoreflect.FileDescriptor
 
 const file_asset_proto_rawDesc = "" +
 	"\n" +
-	"\vasset.proto\x12\aaccount\x1a\x19google/api/resource.proto\"M\n" +
+	"\vasset.proto\x12\aaccount\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto\"M\n" +
 	"\x11ListAssetsRequest\x128\n" +
 	"\x06parent\x18\x01 \x01(\tB \xfaA\x1d\n" +
 	"\x1brjfield.com/backend/AccountR\x06parent\"9\n" +
@@ -295,10 +295,10 @@ const file_asset_proto_rawDesc = "" +
 	"\faccount_name\x18\x03 \x01(\tR\vaccountName\x12\x16\n" +
 	"\x06ticker\x18\x04 \x01(\tR\x06ticker\x12%\n" +
 	"\x0eholding_amount\x18\x05 \x01(\x01R\rholdingAmount:W\xeaAT\n" +
-	"\x19rjfield.com/backend/Asset\x127users/{user_id}/accounts/{account_id}/assets/{asset_id}2\xaf\x01\n" +
-	"\fAssetService\x12D\n" +
+	"\x19rjfield.com/backend/Asset\x127users/{user_id}/accounts/{account_id}/assets/{asset_id}2\xdd\x01\n" +
+	"\fAssetService\x12r\n" +
 	"\n" +
-	"ListAssets\x12\x1a.account.ListAssetsRequest\x1a\x18.account.ListAssetsReply\"\x00\x12Y\n" +
+	"ListAssets\x12\x1a.account.ListAssetsRequest\x1a\x18.account.ListAssetsReply\".\x82\xd3\xe4\x93\x02(\x12&/v1/{parent=users/*/accounts/*}/assets\x12Y\n" +
 	"\x11ListAssetsForUser\x12!.account.ListAssetsForUserRequest\x1a\x1f.account.ListAssetsForUserReply\"\x00B\x06Z\x04./pbb\x06proto3"
 
 var (
