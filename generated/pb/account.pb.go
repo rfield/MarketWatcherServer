@@ -287,7 +287,7 @@ var File_account_proto protoreflect.FileDescriptor
 
 const file_account_proto_rawDesc = "" +
 	"\n" +
-	"\raccount.proto\x12\aaccount\x1a\x19google/api/resource.proto\"\xc2\x01\n" +
+	"\raccount.proto\x12\aaccount\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto\"\xc2\x01\n" +
 	"\aAccount\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1d\n" +
 	"\n" +
@@ -307,11 +307,11 @@ const file_account_proto_rawDesc = "" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"A\n" +
 	"\x11ListAccountsReply\x12,\n" +
-	"\baccounts\x18\x01 \x03(\v2\x10.account.AccountR\baccounts2\xa2\x01\n" +
+	"\baccounts\x18\x01 \x03(\v2\x10.account.AccountR\baccounts2\xc7\x01\n" +
 	"\x0eAccountService\x12D\n" +
 	"\n" +
-	"GetAccount\x12\x1a.account.GetAccountRequest\x1a\x18.account.GetAccountReply\"\x00\x12J\n" +
-	"\fListAccounts\x12\x1c.account.ListAccountsRequest\x1a\x1a.account.ListAccountsReply\"\x00B\x06Z\x04./pbb\x06proto3"
+	"GetAccount\x12\x1a.account.GetAccountRequest\x1a\x18.account.GetAccountReply\"\x00\x12o\n" +
+	"\fListAccounts\x12\x1c.account.ListAccountsRequest\x1a\x1a.account.ListAccountsReply\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/{parent=users/*}/accountsB\x06Z\x04./pbb\x06proto3"
 
 var (
 	file_account_proto_rawDescOnce sync.Once

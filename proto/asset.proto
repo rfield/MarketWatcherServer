@@ -5,12 +5,17 @@ package account;
 option go_package = "./pb";
 
 import "google/api/resource.proto";
+import "google/api/annotations.proto";
 
 
 // AssetService provides operations for managing user assets.
 service AssetService {
   // Standard CRUD operations
-  rpc ListAssets (ListAssetsRequest) returns (ListAssetsReply) {}
+  rpc ListAssets (ListAssetsRequest) returns (ListAssetsReply) {
+      option (google.api.http) = {
+        get: "/v1/{parent=users/*/accounts/*}/assets"
+      };
+  }
 
   // Additional operations
   // ListAssetsForUser retrieves all assets associated with a specific user.

@@ -5,6 +5,7 @@ package account;
 option go_package = "./pb";
 
 import "google/api/resource.proto";
+import "google/api/annotations.proto";
 
 // AccountService provides account management operations including retrieval and authentication.
 service AccountService {
@@ -12,7 +13,11 @@ service AccountService {
   // GetAccount retrieves an account by ID.
   rpc GetAccount (GetAccountRequest) returns (GetAccountReply) {}
   // ListAccounts retrieves a (paginated) list of all accounts for a user
-  rpc ListAccounts (ListAccountsRequest) returns (ListAccountsReply) {}
+  rpc ListAccounts (ListAccountsRequest) returns (ListAccountsReply) {
+      option (google.api.http) = {
+        get: "/v1/{parent=users/*}/accounts"
+      };
+  }
 
 }
 

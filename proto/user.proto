@@ -5,20 +5,29 @@ package user;
 option go_package = "./pb";
 
 import "google/api/resource.proto";
+import "google/api/annotations.proto";
 
 // UserService provides user management operations including CRUD operations and authentication.
 service UserService {
     // Standard CRUD operations
     // CreateUser creates a new user.
     rpc CreateUser (CreateUserRequest) returns (CreateUserReply) {}
+    // ListUsers retrieves a (paginated) list of all users.
+    rpc ListUsers (ListUsersRequest) returns (ListUsersReply) {
+        option (google.api.http) = {
+          get: "/v1/users"
+        };
+    }
     // GetUser retrieves a user by ID.
-    rpc GetUser (GetUserRequest) returns (GetUserReply) {}
+    rpc GetUser (GetUserRequest) returns (GetUserReply) {
+        option (google.api.http) = {
+          get: "/v1/users/{user_id}"
+        };
+    }
     // UpdateUser updates an existing user.
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply) {}
     // DeleteUser deletes a user by ID.
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply) {}
-    // ListUsers retrieves a (paginated) list of all users.
-    rpc ListUsers (ListUsersRequest) returns (ListUsersReply) {}
 
     // Additional operations
     // AuthenticateUser authenticates a user with username and password.

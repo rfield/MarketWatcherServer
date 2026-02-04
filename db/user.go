@@ -98,7 +98,10 @@ func deleteUser(id string) (string, error) {
 }
 
 // listUsers fetches all users from the database
-func listUsers() ([]*pb.User, error) {
+func listUsers(pageSize int32, pageToken string) ([]*pb.User, error) {
+	_ = pageSize // TODO: implement pagination
+	_ = pageToken
+
 	log.Printf("listUsers() - fetching all users")
 	rows, err := db.Query(`SELECT id, given_name, family_name, email FROM users ORDER BY id`)
 	if err != nil {

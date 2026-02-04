@@ -688,7 +688,7 @@ var File_user_proto protoreflect.FileDescriptor
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\x04user\x1a\x19google/api/resource.proto\"\x90\x02\n" +
+	"user.proto\x12\x04user\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto\"\x90\x02\n" +
 	"\x04User\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1a\n" +
@@ -735,16 +735,16 @@ const file_user_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"F\n" +
 	"\x15AuthenticateUserReply\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId2\x93\x03\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId2\xbf\x03\n" +
 	"\vUserService\x12>\n" +
 	"\n" +
-	"CreateUser\x12\x17.user.CreateUserRequest\x1a\x15.user.CreateUserReply\"\x00\x125\n" +
-	"\aGetUser\x12\x14.user.GetUserRequest\x1a\x12.user.GetUserReply\"\x00\x12>\n" +
+	"CreateUser\x12\x17.user.CreateUserRequest\x1a\x15.user.CreateUserReply\"\x00\x12L\n" +
+	"\tListUsers\x12\x16.user.ListUsersRequest\x1a\x14.user.ListUsersReply\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/users\x12P\n" +
+	"\aGetUser\x12\x14.user.GetUserRequest\x1a\x12.user.GetUserReply\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/users/{user_id}\x12>\n" +
 	"\n" +
 	"UpdateUser\x12\x17.user.UpdateUserRequest\x1a\x15.user.UpdateUserReply\"\x00\x12>\n" +
 	"\n" +
-	"DeleteUser\x12\x17.user.DeleteUserRequest\x1a\x15.user.DeleteUserReply\"\x00\x12;\n" +
-	"\tListUsers\x12\x16.user.ListUsersRequest\x1a\x14.user.ListUsersReply\"\x00\x12P\n" +
+	"DeleteUser\x12\x17.user.DeleteUserRequest\x1a\x15.user.DeleteUserReply\"\x00\x12P\n" +
 	"\x10AuthenticateUser\x12\x1d.user.AuthenticateUserRequest\x1a\x1b.user.AuthenticateUserReply\"\x00B\x06Z\x04./pbb\x06proto3"
 
 var (
@@ -783,16 +783,16 @@ var file_user_proto_depIdxs = []int32{
 	0,  // 4: user.UpdateUserReply.user:type_name -> user.User
 	0,  // 5: user.ListUsersReply.users:type_name -> user.User
 	1,  // 6: user.UserService.CreateUser:input_type -> user.CreateUserRequest
-	3,  // 7: user.UserService.GetUser:input_type -> user.GetUserRequest
-	5,  // 8: user.UserService.UpdateUser:input_type -> user.UpdateUserRequest
-	7,  // 9: user.UserService.DeleteUser:input_type -> user.DeleteUserRequest
-	9,  // 10: user.UserService.ListUsers:input_type -> user.ListUsersRequest
+	9,  // 7: user.UserService.ListUsers:input_type -> user.ListUsersRequest
+	3,  // 8: user.UserService.GetUser:input_type -> user.GetUserRequest
+	5,  // 9: user.UserService.UpdateUser:input_type -> user.UpdateUserRequest
+	7,  // 10: user.UserService.DeleteUser:input_type -> user.DeleteUserRequest
 	11, // 11: user.UserService.AuthenticateUser:input_type -> user.AuthenticateUserRequest
 	2,  // 12: user.UserService.CreateUser:output_type -> user.CreateUserReply
-	4,  // 13: user.UserService.GetUser:output_type -> user.GetUserReply
-	6,  // 14: user.UserService.UpdateUser:output_type -> user.UpdateUserReply
-	8,  // 15: user.UserService.DeleteUser:output_type -> user.DeleteUserReply
-	10, // 16: user.UserService.ListUsers:output_type -> user.ListUsersReply
+	10, // 13: user.UserService.ListUsers:output_type -> user.ListUsersReply
+	4,  // 14: user.UserService.GetUser:output_type -> user.GetUserReply
+	6,  // 15: user.UserService.UpdateUser:output_type -> user.UpdateUserReply
+	8,  // 16: user.UserService.DeleteUser:output_type -> user.DeleteUserReply
 	12, // 17: user.UserService.AuthenticateUser:output_type -> user.AuthenticateUserReply
 	12, // [12:18] is the sub-list for method output_type
 	6,  // [6:12] is the sub-list for method input_type
