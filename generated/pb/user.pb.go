@@ -735,7 +735,7 @@ const file_user_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"F\n" +
 	"\x15AuthenticateUserReply\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId2\xbf\x03\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId2\xda\x03\n" +
 	"\vUserService\x12>\n" +
 	"\n" +
 	"CreateUser\x12\x17.user.CreateUserRequest\x1a\x15.user.CreateUserReply\"\x00\x12L\n" +
@@ -744,8 +744,8 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"UpdateUser\x12\x17.user.UpdateUserRequest\x1a\x15.user.UpdateUserReply\"\x00\x12>\n" +
 	"\n" +
-	"DeleteUser\x12\x17.user.DeleteUserRequest\x1a\x15.user.DeleteUserReply\"\x00\x12P\n" +
-	"\x10AuthenticateUser\x12\x1d.user.AuthenticateUserRequest\x1a\x1b.user.AuthenticateUserReply\"\x00B\x06Z\x04./pbb\x06proto3"
+	"DeleteUser\x12\x17.user.DeleteUserRequest\x1a\x15.user.DeleteUserReply\"\x00\x12k\n" +
+	"\x10AuthenticateUser\x12\x1d.user.AuthenticateUserRequest\x1a\x1b.user.AuthenticateUserReply\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/authenticateB\x06Z\x04./pbb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once

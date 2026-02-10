@@ -48,6 +48,8 @@ type UserServiceClient interface {
 	// AuthenticateUser authenticates a user with username and password.
 	// Note that AuthenticateUser() is for demonstration purposed only.
 	// Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
+	// Note that the HTTP annotation indicates a POST request as
+	// recommended for all custom methods in the Google AIP.
 	AuthenticateUser(ctx context.Context, in *AuthenticateUserRequest, opts ...grpc.CallOption) (*AuthenticateUserReply, error)
 }
 
@@ -140,6 +142,8 @@ type UserServiceServer interface {
 	// AuthenticateUser authenticates a user with username and password.
 	// Note that AuthenticateUser() is for demonstration purposed only.
 	// Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
+	// Note that the HTTP annotation indicates a POST request as
+	// recommended for all custom methods in the Google AIP.
 	AuthenticateUser(context.Context, *AuthenticateUserRequest) (*AuthenticateUserReply, error)
 	mustEmbedUnimplementedUserServiceServer()
 }

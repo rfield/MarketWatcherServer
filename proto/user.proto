@@ -33,7 +33,14 @@ service UserService {
     // AuthenticateUser authenticates a user with username and password.
     // Note that AuthenticateUser() is for demonstration purposed only. 
     // Basic Auth is not recommended for production systems. Use OAuth2 or JWT instead.
-    rpc AuthenticateUser (AuthenticateUserRequest) returns (AuthenticateUserReply) {}
+    // Note that the HTTP annotation indicates a POST request as
+    // recommended for all custom methods in the Google AIP.
+    rpc AuthenticateUser (AuthenticateUserRequest) returns (AuthenticateUserReply) {
+        option (google.api.http) = {
+          post: "/v1/authenticate"
+          body: "*"
+        };
+    }
 }
 
 // User is a top level message representing a user in the system.
