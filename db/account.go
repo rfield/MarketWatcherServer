@@ -24,11 +24,12 @@ func listAccounts(user_id string) ([]*pb.Account, error) {
 
 	for rows.Next() {
 		var account pb.Account
-		err := rows.Scan(&account.AccountId, &account.AccountName)
+		var accountId string
+		err := rows.Scan(&accountId, &account.AccountName)
 		if err != nil {
 			return nil, fmt.Errorf("unable to scan row: %v", err)
 		}
-		account.Name = "users/" + user_id + "/accounts/" + account.GetAccountId()
+		account.Name = "users/" + user_id + "/accounts/" + accountId
 		accounts = append(accounts, &account)
 	}
 

@@ -51,8 +51,6 @@ message Asset {
 
   // TODO: Add remove user_id  and account_name if possible, since they are redundant with the resource name
   
-  string user_id        = 2;
-  string account_name   = 3;
   string ticker         = 4;
   double holding_amount = 5;
 }

@@ -37,7 +37,7 @@ service UserService {
     // recommended for all custom methods in the Google AIP.
     rpc AuthenticateUser (AuthenticateUserRequest) returns (AuthenticateUserReply) {
         option (google.api.http) = {
-          post: "/v1/authenticate"
+          post: "/v1/users:authenticate"
           body: "*"
         };
     }
@@ -51,7 +51,6 @@ message User {
     };
     string name = 1; // Fully-qualified resource name in the format "users/{user_id}"
 
-    string user_id = 2; // Unique database identifier for the user
     string username = 3; // Unique username for login
     string password_hash = 4; // Hashed password for authentication
     string token = 5; // Authentication token for session management

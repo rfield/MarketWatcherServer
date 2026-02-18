@@ -27,8 +27,7 @@ func createUser(u *pb.User) (*pb.User, error) {
 	}
 
 	log.Printf("createUser() - new record ID is: %s", newID)
-	u.UserId = newID
-	u.Name = "users/" + u.GetUserId()
+	u.Name = "users/" + newID
 
 	return u, nil
 }
@@ -42,16 +41,17 @@ func readUser(id string) (*pb.User, error) {
 	row := db.QueryRow(sqlStatement, id)
 
 	var user pb.User
+	var userId string
 
 	// Scan copies the column values from the matched row into the variables
 	// pointed to by the arguments. Errors (including sql.ErrNoRows) are handled here.
-	switch err := row.Scan(&user.UserId, &user.Username, &user.PasswordHash, &user.GivenName, &user.FamilyName, &user.Email); err {
+	switch err := row.Scan(&userId, &user.Username, &user.PasswordHash, &user.GivenName, &user.FamilyName, &user.Email); err {
 	case sql.ErrNoRows:
 		log.Printf("readUser() - no user found with ID: %s", id)
 		return nil, fmt.Errorf("user with ID %s not found", id)
 	case nil:
-		log.Printf("readUser() - found user: %s", user.GetUserId())
-		user.Name = "users/" + user.GetUserId()
+		log.Printf("readUser() - found user: %s", userId)
+		user.Name = "users/" + userId
 		return &user, nil
 	default:
 		log.Printf("readUser() - query error: %v", err)
@@ -62,11 +62,12 @@ func readUser(id string) (*pb.User, error) {
 // updateUser: Updates the first name of a user based on their ID
 func updateUser(u *pb.User) (*pb.User, error) {
 	log.Printf("updateUser() - updating user: %v", u)
+	userId := UserIDFromResourceName(u.Name)
 	sqlStatement := `
 		UPDATE users
 		SET given_name = $2
 		WHERE id = $1`
-	res, err := db.Exec(sqlStatement, u.UserId, u.GivenName)
+	res, err := db.Exec(sqlStatement, userId, u.GivenName)
 	if err != nil {
 		return nil, err
 	}
@@ -113,13 +114,15 @@ func listUsers(pageSize int32, pageToken string) ([]*pb.User, error) {
 
 	for rows.Next() {
 		var u pb.User
+		var userId string
 
-		err := rows.Scan(&u.UserId, &u.Username, &u.PasswordHash, &u.Email)
+		err := rows.Scan(&userId, &u.GivenName, &u.FamilyName, &u.Email)
 		if err != nil {
 			log.Fatal(err)
 		}
+		u.Name = "users/" + userId
 		users = append(users, &u)
-		log.Printf("listUsers() - ID: %s, Name: %s %s, Email: %s", u.UserId, u.Username, u.PasswordHash, u.Email)
+		log.Printf("listUsers() - ID: %s, Name: %s %s, Email: %s", userId, u.Username, u.PasswordHash, u.Email)
 	}
 
 	err = rows.Err()
@@ -157,40 +160,40 @@ func authenticateUser(username string, password string) (string, error) {
 }
 
 // ListAssetsByUser fetches all assets for a given user ID across their accounts.
-func listAssetsByUser(userId string) ([]*pb.Asset, error) {
-	log.Printf("listAssetsByUser() - fetching assets for user ID: %s", userId)
-	sqlStatement :=
-		`select u.username, a.name, ast.ticker, ast.holding_amount
-	 from accounts a, users u, assets ast
-	where
-		a.user_id = u.id and
-		ast.user_id = u.id and
-		ast.account_id = a.id and
-		u.id = $1
-	order by a.name`
+// func listAssetsByUser(userId string) ([]*pb.Asset, error) {
+// 	log.Printf("listAssetsByUser() - fetching assets for user ID: %s", userId)
+// 	sqlStatement :=
+// 		`select u.username, a.name, ast.ticker, ast.holding_amount
+// 	 from accounts a, users u, assets ast
+// 	where
+// 		a.user_id = u.id and
+// 		ast.user_id = u.id and
+// 		ast.account_id = a.id and
+// 		u.id = $1
+// 	order by a.name`
 
-	rows, err := db.Query(sqlStatement, userId)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
+// 	rows, err := db.Query(sqlStatement, userId)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	defer rows.Close()
 
-	var assets []*pb.Asset
+// 	var assets []*pb.Asset
 
-	for rows.Next() {
-		var a pb.Asset
-		err := rows.Scan(&a.UserId, &a.AccountName, &a.Ticker, &a.HoldingAmount)
-		if err != nil {
-			log.Fatal(err)
-		}
-		assets = append(assets, &a)
-		log.Printf("listAssetsByUser() - UserID: %s, AccountName: %s, Ticker: %s, HoldingAmount: %f", a.UserId, a.AccountName, a.Ticker, a.HoldingAmount)
-	}
+// 	for rows.Next() {
+// 		var a pb.Asset
+// 		err := rows.Scan(&a.UserId, &a.AccountName, &a.Ticker, &a.HoldingAmount)
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		assets = append(assets, &a)
+// 		log.Printf("listAssetsByUser() - UserID: %s, AccountName: %s, Ticker: %s, HoldingAmount: %f", a.UserId, a.AccountName, a.Ticker, a.HoldingAmount)
+// 	}
 
-	err = rows.Err()
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("listAssetsByUser() - returning %d assets", len(assets))
-	return assets, nil
-}
+// 	err = rows.Err()
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	log.Printf("listAssetsByUser() - returning %d assets", len(assets))
+// 	return assets, nil
+// }

@@ -26,7 +26,6 @@ const (
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                     // Fully-qualified resource name in the format "users/{user_id}"
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                   // Unique database identifier for the user
 	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`                             // Unique username for login
 	PasswordHash  string                 `protobuf:"bytes,4,opt,name=password_hash,json=passwordHash,proto3" json:"password_hash,omitempty"` // Hashed password for authentication
 	Token         string                 `protobuf:"bytes,5,opt,name=token,proto3" json:"token,omitempty"`                                   // Authentication token for session management
@@ -70,13 +69,6 @@ func (*User) Descriptor() ([]byte, []int) {
 func (x *User) GetName() string {
 	if x != nil {
 		return x.Name
-	}
-	return ""
-}
-
-func (x *User) GetUserId() string {
-	if x != nil {
-		return x.UserId
 	}
 	return ""
 }
@@ -688,10 +680,9 @@ var File_user_proto protoreflect.FileDescriptor
 const file_user_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"user.proto\x12\x04user\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto\"\x90\x02\n" +
+	"user.proto\x12\x04user\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto\"\xf7\x01\n" +
 	"\x04User\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1a\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1a\n" +
 	"\busername\x18\x03 \x01(\tR\busername\x12#\n" +
 	"\rpassword_hash\x18\x04 \x01(\tR\fpasswordHash\x12\x14\n" +
 	"\x05token\x18\x05 \x01(\tR\x05token\x12\x1d\n" +
@@ -735,7 +726,7 @@ const file_user_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"F\n" +
 	"\x15AuthenticateUserReply\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId2\xda\x03\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId2\xe0\x03\n" +
 	"\vUserService\x12>\n" +
 	"\n" +
 	"CreateUser\x12\x17.user.CreateUserRequest\x1a\x15.user.CreateUserReply\"\x00\x12L\n" +
@@ -744,8 +735,8 @@ const file_user_proto_rawDesc = "" +
 	"\n" +
 	"UpdateUser\x12\x17.user.UpdateUserRequest\x1a\x15.user.UpdateUserReply\"\x00\x12>\n" +
 	"\n" +
-	"DeleteUser\x12\x17.user.DeleteUserRequest\x1a\x15.user.DeleteUserReply\"\x00\x12k\n" +
-	"\x10AuthenticateUser\x12\x1d.user.AuthenticateUserRequest\x1a\x1b.user.AuthenticateUserReply\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/authenticateB\x06Z\x04./pbb\x06proto3"
+	"DeleteUser\x12\x17.user.DeleteUserRequest\x1a\x15.user.DeleteUserReply\"\x00\x12q\n" +
+	"\x10AuthenticateUser\x12\x1d.user.AuthenticateUserRequest\x1a\x1b.user.AuthenticateUserReply\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/v1/users:authenticateB\x06Z\x04./pbb\x06proto3"
 
 var (
 	file_user_proto_rawDescOnce sync.Once

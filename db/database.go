@@ -65,7 +65,8 @@ func AuthenticateUser(username string, password string) (string, error) {
 	return authenticateUser(username, password)
 }
 func ListAssetsByUser(userId string) ([]*pb.Asset, error) {
-	return listAssetsByUser(userId)
+	// return listAssetsByUser(userId)
+	return nil, fmt.Errorf("unimplemented")
 }
 
 // Account CRUD operations
