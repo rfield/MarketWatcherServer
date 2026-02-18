@@ -37,8 +37,8 @@ func main() {
 		log.Fatalf("could not list assets: %v", err)
 	}
 	for _, asset := range arsp.GetAssets() {
-		log.Printf("Asset: UserID=%s, AccountName=%s, Ticker=%s, HoldingAmount=%.2f",
-			asset.GetUserId(), asset.GetAccountName(), asset.GetTicker(), asset.GetHoldingAmount())
+		log.Printf("Asset: Name=%s, Ticker=%s, HoldingAmount=%.2f",
+			asset.GetName(), asset.GetTicker(), asset.GetHoldingAmount())
 	}
 
 	/*

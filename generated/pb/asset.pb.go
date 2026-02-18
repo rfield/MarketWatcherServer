@@ -202,8 +202,6 @@ func (x *ListAssetsForUserReply) GetAssets() []*Asset {
 type Asset struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"` // Fully-qualified resource name in the format "users/{user_id}/accounts/{account_id}/assets/{asset_id}"
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	AccountName   string                 `protobuf:"bytes,3,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"`
 	Ticker        string                 `protobuf:"bytes,4,opt,name=ticker,proto3" json:"ticker,omitempty"`
 	HoldingAmount float64                `protobuf:"fixed64,5,opt,name=holding_amount,json=holdingAmount,proto3" json:"holding_amount,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -247,20 +245,6 @@ func (x *Asset) GetName() string {
 	return ""
 }
 
-func (x *Asset) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *Asset) GetAccountName() string {
-	if x != nil {
-		return x.AccountName
-	}
-	return ""
-}
-
 func (x *Asset) GetTicker() string {
 	if x != nil {
 		return x.Ticker
@@ -288,11 +272,9 @@ const file_asset_proto_rawDesc = "" +
 	"\x18ListAssetsForUserRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\"@\n" +
 	"\x16ListAssetsForUserReply\x12&\n" +
-	"\x06assets\x18\x01 \x03(\v2\x0e.account.AssetR\x06assets\"\xef\x01\n" +
+	"\x06assets\x18\x01 \x03(\v2\x0e.account.AssetR\x06assets\"\xb3\x01\n" +
 	"\x05Asset\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId\x12!\n" +
-	"\faccount_name\x18\x03 \x01(\tR\vaccountName\x12\x16\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
 	"\x06ticker\x18\x04 \x01(\tR\x06ticker\x12%\n" +
 	"\x0eholding_amount\x18\x05 \x01(\x01R\rholdingAmount:W\xeaAT\n" +
 	"\x19rjfield.com/backend/Asset\x127users/{user_id}/accounts/{account_id}/assets/{asset_id}2\xdd\x01\n" +

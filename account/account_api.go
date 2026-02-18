@@ -18,7 +18,6 @@ func (s *AccountServer) GetAccount(ctx context.Context, req *pb.GetAccountReques
 	return &pb.GetAccountReply{
 		Account: &pb.Account{
 			AccountName: "Sample Account",
-			Balance:     1000.50,
 		},
 	}, nil
 }

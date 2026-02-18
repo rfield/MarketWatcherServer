@@ -28,9 +28,8 @@ message Account {
       pattern: "users/{user_id}/accounts/{account_id}"
   };
   string name = 1; // Fully-qualified resource name in the format "users/{user_id}/accounts/{account_id}"
-  string account_id = 2; // TODO: consider removing account_id since it's redundant with the resource name
+
   string account_name = 3; // Descriptive name for the account
-  double balance = 4;
 }
 
 message GetAccountRequest {

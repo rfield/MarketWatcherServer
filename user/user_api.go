@@ -18,9 +18,6 @@ func (s *UserServer) ListUsers(ctx context.Context, req *pb.ListUsersRequest) (*
 	if err != nil {
 		return nil, err
 	}
-	for _, u := range users {
-		u.Name = "users/" + u.UserId
-	}
 	log.Printf("ListUsers() - returning: %v", users)
 	return &pb.ListUsersReply{
 		Users: users,
@@ -33,8 +30,6 @@ func (s *UserServer) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.G
 	if err != nil {
 		return nil, err
 	}
-	u.Name = "users/" + u.UserId
-
 	log.Printf("GetUser() - returning: %v", u)
 	return &pb.GetUserReply{
 		User: u,

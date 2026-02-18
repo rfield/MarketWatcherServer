@@ -26,9 +26,7 @@ const (
 type Account struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`                                  // Fully-qualified resource name in the format "users/{user_id}/accounts/{account_id}"
-	AccountId     string                 `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`       // TODO: consider removing account_id since it's redundant with the resource name
 	AccountName   string                 `protobuf:"bytes,3,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"` // Descriptive name for the account
-	Balance       float64                `protobuf:"fixed64,4,opt,name=balance,proto3" json:"balance,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -70,25 +68,11 @@ func (x *Account) GetName() string {
 	return ""
 }
 
-func (x *Account) GetAccountId() string {
-	if x != nil {
-		return x.AccountId
-	}
-	return ""
-}
-
 func (x *Account) GetAccountName() string {
 	if x != nil {
 		return x.AccountName
 	}
 	return ""
-}
-
-func (x *Account) GetBalance() float64 {
-	if x != nil {
-		return x.Balance
-	}
-	return 0
 }
 
 type GetAccountRequest struct {
@@ -287,13 +271,10 @@ var File_account_proto protoreflect.FileDescriptor
 
 const file_account_proto_rawDesc = "" +
 	"\n" +
-	"\raccount.proto\x12\aaccount\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto\"\xc2\x01\n" +
+	"\raccount.proto\x12\aaccount\x1a\x19google/api/resource.proto\x1a\x1cgoogle/api/annotations.proto\"\x89\x01\n" +
 	"\aAccount\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1d\n" +
-	"\n" +
-	"account_id\x18\x02 \x01(\tR\taccountId\x12!\n" +
-	"\faccount_name\x18\x03 \x01(\tR\vaccountName\x12\x18\n" +
-	"\abalance\x18\x04 \x01(\x01R\abalance:G\xeaAD\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12!\n" +
+	"\faccount_name\x18\x03 \x01(\tR\vaccountName:G\xeaAD\n" +
 	"\x1brjfield.com/backend/Account\x12%users/{user_id}/accounts/{account_id}\"2\n" +
 	"\x11GetAccountRequest\x12\x1d\n" +
 	"\n" +
