@@ -4,13 +4,29 @@ package price;
 
 option go_package = "./pb";
 
+import "google/api/resource.proto";
+import "google/api/annotations.proto";
+
 // PriceService provides operations for retrieving and streaming price data.
 service PriceService {
   // Standard CRUD operations
   // GetPrice retrieves a price by ID, typically a ticker symbol or product code.
-  rpc GetPrice (GetPriceRequest) returns (GetPriceReply) {}
+  rpc GetPrice (GetPriceRequest) returns (GetPriceReply) {
+    option (google.api.http) = {
+      get: "/v1/prices/{price_id}"
+    };
+  }
+
+  // Custom operations
   // GetPrices retrieves multiple prices by their IDs.
   rpc GetPrices (GetPricesRequest) returns (GetPricesReply) {}
+
+  // Batch operations
+  rpc BatchGetPrices (BatchGetPricesRequest) returns (BatchGetPricesReply) {
+    option (google.api.http) = {
+      get: "/v1/prices:batchGet"
+    };
+  }
 
   // Streaming operations
   rpc StreamPrices (StreamPricesRequest) returns (stream StreamPricesReply) {}
@@ -32,6 +48,13 @@ message GetPricesReply {
   repeated Price prices = 1;
 } 
 
+message BatchGetPricesRequest {
+  repeated string names = 1;
+} 
+message BatchGetPricesReply {
+  repeated Price prices = 1;
+}
+
 message StreamPricesRequest {
   repeated string price_ids = 1;
 }
@@ -42,6 +65,12 @@ message StreamPricesReply {
 
 // Price is a top level message representing an asset price
 message Price {
+    option (google.api.resource) = {
+        type: "rjfield.com/backend/Price"
+        pattern: "prices/{price_id}"
+    };
+  string name = 10; // fully qualified name, e.g. "prices/456"
+
   string price_id = 1;
   double price = 2;
   double price_change = 3;

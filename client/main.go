@@ -29,61 +29,67 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	ast := pb.NewAssetServiceClient(conn)
-	arsp, err := ast.ListAssetsForUser(ctx, &pb.ListAssetsForUserRequest{
-		UserId: "b0159a28-5a03-403f-ba2f-192b41a32d9a",
-	})
+	px := pb.NewPriceServiceClient(conn)
+	prsp, err := px.BatchGetPrices(ctx, &pb.BatchGetPricesRequest{Names: []string{"MSFT"}})
 	if err != nil {
-		log.Fatalf("could not list assets: %v", err)
+		log.Fatalf("could not get price: %v", err)
 	}
-	for _, asset := range arsp.GetAssets() {
-		log.Printf("Asset: Name=%s, Ticker=%s, HoldingAmount=%.2f",
-			asset.GetName(), asset.GetTicker(), asset.GetHoldingAmount())
-	}
+	log.Printf("Price: %s", prsp.GetPrices())
 
 	/*
-
-		ac := pb.NewAccountServiceClient(conn)
-		lr, err := ac.Login(ctx, &pb.LoginRequest{
-			Username: "user1",
-			Password: "pass1",
+		ast := pb.NewAssetServiceClient(conn)
+		arsp, err := ast.ListAssetsForUser(ctx, &pb.ListAssetsForUserRequest{
+			UserId: "b0159a28-5a03-403f-ba2f-192b41a32d9a",
 		})
 		if err != nil {
-			log.Fatalf("could not login: %v", err)
+			log.Fatalf("could not list assets: %v", err)
 		}
-		log.Printf("Login: %s", lr.GetAccountId())
-
-		ar, err := ac.GetAccount(ctx, &pb.GetAccountRequest{AccountId: *acct})
-		if err != nil {
-			log.Fatalf("could not get account: %v", err)
+		for _, asset := range arsp.GetAssets() {
+			log.Printf("Asset: Name=%s, Ticker=%s, HoldingAmount=%.2f",
+				asset.GetName(), asset.GetTicker(), asset.GetHoldingAmount())
 		}
-		log.Printf("Account: %s", ar.GetAccount())
 
-		pc := pb.NewPriceServiceClient(conn)
+			ac := pb.NewAccountServiceClient(conn)
+			lr, err := ac.Login(ctx, &pb.LoginRequest{
+				Username: "user1",
+				Password: "pass1",
+			})
+			if err != nil {
+				log.Fatalf("could not login: %v", err)
+			}
+			log.Printf("Login: %s", lr.GetAccountId())
 
-		pr, err := pc.GetPrice(ctx, &pb.GetPriceRequest{PriceId: *product})
-		if err != nil {
-			log.Fatalf("could not get price: %v", err)
-		}
-		log.Printf("Price: %s", pr.GetPrice())
+			ar, err := ac.GetAccount(ctx, &pb.GetAccountRequest{AccountId: *acct})
+			if err != nil {
+				log.Fatalf("could not get account: %v", err)
+			}
+			log.Printf("Account: %s", ar.GetAccount())
 
-		uc := pb.NewUserServiceClient(conn)
+			pc := pb.NewPriceServiceClient(conn)
 
-		lir, err := uc.AuthenticateUser(ctx, &pb.AuthenticateUserRequest{
-			Username: "rjfield777",
-			Password: "foo",
-		})
-		if err != nil {
-			log.Fatalf("could not login: %v", err)
-		}
-		log.Printf("Login: %s", lir.GetUserId())
+			pr, err := pc.GetPrice(ctx, &pb.GetPriceRequest{PriceId: *product})
+			if err != nil {
+				log.Fatalf("could not get price: %v", err)
+			}
+			log.Printf("Price: %s", pr.GetPrice())
 
-		// ur, err := uc.GetUser(ctx, &pb.GetUserRequest{UserId: "38ce4dbb-73ff-4af2-9ac8-acb0c8bf8c52"})
-		ur, err := uc.GetUser(ctx, &pb.GetUserRequest{UserId: lir.GetUserId()})
-		if err != nil {
-			log.Fatalf("could not get user: %v", err)
-		}
-		log.Printf("User: %s", ur.GetUser())
+			uc := pb.NewUserServiceClient(conn)
+
+			lir, err := uc.AuthenticateUser(ctx, &pb.AuthenticateUserRequest{
+				Username: "rjfield777",
+				Password: "foo",
+			})
+			if err != nil {
+				log.Fatalf("could not login: %v", err)
+			}
+			log.Printf("Login: %s", lir.GetUserId())
+
+			// ur, err := uc.GetUser(ctx, &pb.GetUserRequest{UserId: "38ce4dbb-73ff-4af2-9ac8-acb0c8bf8c52"})
+			ur, err := uc.GetUser(ctx, &pb.GetUserRequest{UserId: lir.GetUserId()})
+			if err != nil {
+				log.Fatalf("could not get user: %v", err)
+			}
+			log.Printf("User: %s", ur.GetUser())
 	*/
 
 	// stream, err := pc.StreamPrices(ctx, &pb.StreamPricesRequest{
