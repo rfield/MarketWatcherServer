@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PriceService_GetPrice_FullMethodName     = "/price.PriceService/GetPrice"
-	PriceService_GetPrices_FullMethodName    = "/price.PriceService/GetPrices"
-	PriceService_StreamPrices_FullMethodName = "/price.PriceService/StreamPrices"
+	PriceService_GetPrice_FullMethodName       = "/price.PriceService/GetPrice"
+	PriceService_GetPrices_FullMethodName      = "/price.PriceService/GetPrices"
+	PriceService_BatchGetPrices_FullMethodName = "/price.PriceService/BatchGetPrices"
+	PriceService_StreamPrices_FullMethodName   = "/price.PriceService/StreamPrices"
 )
 
 // PriceServiceClient is the client API for PriceService service.
@@ -33,8 +34,11 @@ type PriceServiceClient interface {
 	// Standard CRUD operations
 	// GetPrice retrieves a price by ID, typically a ticker symbol or product code.
 	GetPrice(ctx context.Context, in *GetPriceRequest, opts ...grpc.CallOption) (*GetPriceReply, error)
+	// Custom operations
 	// GetPrices retrieves multiple prices by their IDs.
 	GetPrices(ctx context.Context, in *GetPricesRequest, opts ...grpc.CallOption) (*GetPricesReply, error)
+	// Batch operations
+	BatchGetPrices(ctx context.Context, in *BatchGetPricesRequest, opts ...grpc.CallOption) (*BatchGetPricesReply, error)
 	// Streaming operations
 	StreamPrices(ctx context.Context, in *StreamPricesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[StreamPricesReply], error)
 }
@@ -61,6 +65,16 @@ func (c *priceServiceClient) GetPrices(ctx context.Context, in *GetPricesRequest
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetPricesReply)
 	err := c.cc.Invoke(ctx, PriceService_GetPrices_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *priceServiceClient) BatchGetPrices(ctx context.Context, in *BatchGetPricesRequest, opts ...grpc.CallOption) (*BatchGetPricesReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchGetPricesReply)
+	err := c.cc.Invoke(ctx, PriceService_BatchGetPrices_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -95,8 +109,11 @@ type PriceServiceServer interface {
 	// Standard CRUD operations
 	// GetPrice retrieves a price by ID, typically a ticker symbol or product code.
 	GetPrice(context.Context, *GetPriceRequest) (*GetPriceReply, error)
+	// Custom operations
 	// GetPrices retrieves multiple prices by their IDs.
 	GetPrices(context.Context, *GetPricesRequest) (*GetPricesReply, error)
+	// Batch operations
+	BatchGetPrices(context.Context, *BatchGetPricesRequest) (*BatchGetPricesReply, error)
 	// Streaming operations
 	StreamPrices(*StreamPricesRequest, grpc.ServerStreamingServer[StreamPricesReply]) error
 	mustEmbedUnimplementedPriceServiceServer()
@@ -114,6 +131,9 @@ func (UnimplementedPriceServiceServer) GetPrice(context.Context, *GetPriceReques
 }
 func (UnimplementedPriceServiceServer) GetPrices(context.Context, *GetPricesRequest) (*GetPricesReply, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetPrices not implemented")
+}
+func (UnimplementedPriceServiceServer) BatchGetPrices(context.Context, *BatchGetPricesRequest) (*BatchGetPricesReply, error) {
+	return nil, status.Error(codes.Unimplemented, "method BatchGetPrices not implemented")
 }
 func (UnimplementedPriceServiceServer) StreamPrices(*StreamPricesRequest, grpc.ServerStreamingServer[StreamPricesReply]) error {
 	return status.Error(codes.Unimplemented, "method StreamPrices not implemented")
@@ -175,6 +195,24 @@ func _PriceService_GetPrices_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PriceService_BatchGetPrices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchGetPricesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PriceServiceServer).BatchGetPrices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PriceService_BatchGetPrices_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PriceServiceServer).BatchGetPrices(ctx, req.(*BatchGetPricesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PriceService_StreamPrices_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(StreamPricesRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -200,6 +238,10 @@ var PriceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPrices",
 			Handler:    _PriceService_GetPrices_Handler,
+		},
+		{
+			MethodName: "BatchGetPrices",
+			Handler:    _PriceService_BatchGetPrices_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

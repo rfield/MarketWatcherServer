@@ -35,7 +35,7 @@ func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*p
 	}, nil
 }
 
-// GetPrices retrieves the current price for the given price ID.
+// GetPrices retrieves the current price for each of the given price IDs.
 func (s *PriceServer) GetPrices(ctx context.Context, req *pb.GetPricesRequest) (*pb.GetPricesReply, error) {
 	log.Printf("GetPrices() - received: %v", req.GetPriceIds())
 	quotes, err := api.BulkStockQuotes().Symbols(req.GetPriceIds()).Get()
@@ -57,6 +57,32 @@ func (s *PriceServer) GetPrices(ctx context.Context, req *pb.GetPricesRequest) (
 		})
 	}
 	return &pb.GetPricesReply{
+		Prices: p,
+	}, nil
+}
+
+// BatchGetPrices retrieves the current price for each of the given price IDs.
+func (s *PriceServer) BatchGetPrices(ctx context.Context, req *pb.BatchGetPricesRequest) (*pb.BatchGetPricesReply, error) {
+	log.Printf("BatchGetPrices() - received: %v", req.GetNames())
+	quotes, err := api.BulkStockQuotes().Symbols(req.GetNames()).Get()
+	if err != nil {
+		log.Printf("BatchGetPrices() - Error fetching stock quotes for %s: %v", req.GetNames(), err)
+		return nil, err
+	}
+	log.Printf("BatchGetPrices() - Fetched stock quotes for %s: %v", req.GetNames(), quotes)
+	p := make([]*pb.Price, 0, len(quotes))
+	for _, q := range quotes {
+		priceChange := 0.0
+		if q.Change != nil {
+			priceChange = *q.Change
+		}
+		p = append(p, &pb.Price{
+			PriceId:     q.Symbol,
+			Price:       q.Last,
+			PriceChange: priceChange,
+		})
+	}
+	return &pb.BatchGetPricesReply{
 		Prices: p,
 	}, nil
 }
