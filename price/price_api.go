@@ -17,6 +17,7 @@ type PriceServer struct {
 func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*pb.GetPriceReply, error) {
 	log.Printf("GetPrice() - received: %v", req.GetPriceId())
 	quotes, err := api.StockQuote().Symbol(req.GetPriceId()).Get()
+	// quotes, err := stubGetStockQuotes(req.GetPriceId())
 	if err != nil {
 		log.Printf("GetPrice() - Error fetching stock quote for %s: %v", req.GetPriceId(), err)
 		return nil, err
@@ -39,6 +40,7 @@ func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*p
 func (s *PriceServer) GetPrices(ctx context.Context, req *pb.GetPricesRequest) (*pb.GetPricesReply, error) {
 	log.Printf("GetPrices() - received: %v", req.GetPriceIds())
 	quotes, err := api.BulkStockQuotes().Symbols(req.GetPriceIds()).Get()
+	// quotes, err := stubGetBulkStockQuotes(req.GetPriceIds())
 	if err != nil {
 		log.Printf("GetPrice() - Error fetching stock quotes for %s: %v", req.GetPriceIds(), err)
 		return nil, err
@@ -65,6 +67,7 @@ func (s *PriceServer) GetPrices(ctx context.Context, req *pb.GetPricesRequest) (
 func (s *PriceServer) BatchGetPrices(ctx context.Context, req *pb.BatchGetPricesRequest) (*pb.BatchGetPricesReply, error) {
 	log.Printf("BatchGetPrices() - received: %v", req.GetNames())
 	quotes, err := api.BulkStockQuotes().Symbols(req.GetNames()).Get()
+	// quotes, err := stubGetBulkStockQuotes(req.GetNames())
 	if err != nil {
 		log.Printf("BatchGetPrices() - Error fetching stock quotes for %s: %v", req.GetNames(), err)
 		return nil, err
@@ -97,6 +100,7 @@ func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceS
 
 		// No easy way to set a timeout here
 		quotes, err := api.BulkStockQuotes().Symbols(req.GetPriceIds()).Get()
+		// quotes, err := stubGetBulkStockQuotes(req.GetPriceIds())
 		if err != nil {
 			log.Printf("StreamPrices() - Error fetching bulk stock quotes for %v: %v", req.GetPriceIds(), err)
 			continue
