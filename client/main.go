@@ -30,11 +30,17 @@ func main() {
 	defer cancel()
 
 	px := pb.NewPriceServiceClient(conn)
-	prsp, err := px.BatchGetPrices(ctx, &pb.BatchGetPricesRequest{Names: []string{"MSFT"}})
+	prsp, err := px.BatchGetPrices(ctx, &pb.BatchGetPricesRequest{Names: []string{"prices/MSFT", "prices/AAPL", "prices/GOOG"}})
 	if err != nil {
 		log.Fatalf("could not get price: %v", err)
 	}
 	log.Printf("Price: %s", prsp.GetPrices())
+
+	// prsp, err := px.GetPrice(ctx, &pb.GetPriceRequest{Name: "prices/MSFT"})
+	// if err != nil {
+	// 	log.Fatalf("could not get price: %v", err)
+	// }
+	// log.Printf("Price: %v", prsp.GetPrice())
 
 	/*
 		ast := pb.NewAssetServiceClient(conn)

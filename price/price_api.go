@@ -6,6 +6,7 @@ import (
 	"time"
 
 	api "github.com/MarketDataApp/sdk-go"
+	"rjfield.com/backend/db"
 	"rjfield.com/backend/generated/pb"
 )
 
@@ -15,64 +16,44 @@ type PriceServer struct {
 
 // GetPrice retrieves the current price for the given price ID.
 func (s *PriceServer) GetPrice(ctx context.Context, req *pb.GetPriceRequest) (*pb.GetPriceReply, error) {
-	log.Printf("GetPrice() - received: %v", req.GetPriceId())
-	quotes, err := api.StockQuote().Symbol(req.GetPriceId()).Get()
+	log.Printf("GetPrice() - received: %v", req.GetName())
+	id := db.PriceIDFromResourceName(req.GetName())
+	quotes, err := api.StockQuote().Symbol(id).Get()
 	// quotes, err := stubGetStockQuotes(req.GetPriceId())
 	if err != nil {
-		log.Printf("GetPrice() - Error fetching stock quote for %s: %v", req.GetPriceId(), err)
+		log.Printf("GetPrice() - Error fetching stock quote for %s: %v", req.GetName(), err)
 		return nil, err
 	}
-	log.Printf("GetPrice() - Fetched stock quote for %s: %v", req.GetPriceId(), quotes)
+	log.Printf("GetPrice() - Fetched stock quote for %s: %v", req.GetName(), quotes)
 	priceChange := 0.0
 	if quotes[0].Change != nil {
 		priceChange = *quotes[0].Change
 	}
 	return &pb.GetPriceReply{
 		Price: &pb.Price{
-			PriceId:     req.GetPriceId(),
+			Name:        "prices/" + quotes[0].Symbol,
 			Price:       quotes[0].Last,
 			PriceChange: priceChange,
 		},
 	}, nil
 }
 
-// GetPrices retrieves the current price for each of the given price IDs.
-func (s *PriceServer) GetPrices(ctx context.Context, req *pb.GetPricesRequest) (*pb.GetPricesReply, error) {
-	log.Printf("GetPrices() - received: %v", req.GetPriceIds())
-	quotes, err := api.BulkStockQuotes().Symbols(req.GetPriceIds()).Get()
-	// quotes, err := stubGetBulkStockQuotes(req.GetPriceIds())
-	if err != nil {
-		log.Printf("GetPrice() - Error fetching stock quotes for %s: %v", req.GetPriceIds(), err)
-		return nil, err
-	}
-	log.Printf("GetPrice() - Fetched stock quote for %s: %v", req.GetPriceIds(), quotes)
-	p := make([]*pb.Price, 0, len(quotes))
-	for _, q := range quotes {
-		priceChange := 0.0
-		if q.Change != nil {
-			priceChange = *q.Change
-		}
-		p = append(p, &pb.Price{
-			PriceId:     q.Symbol,
-			Price:       q.Last,
-			PriceChange: priceChange,
-		})
-	}
-	return &pb.GetPricesReply{
-		Prices: p,
-	}, nil
-}
-
 // BatchGetPrices retrieves the current price for each of the given price IDs.
 func (s *PriceServer) BatchGetPrices(ctx context.Context, req *pb.BatchGetPricesRequest) (*pb.BatchGetPricesReply, error) {
 	log.Printf("BatchGetPrices() - received: %v", req.GetNames())
-	quotes, err := api.BulkStockQuotes().Symbols(req.GetNames()).Get()
-	// quotes, err := stubGetBulkStockQuotes(req.GetNames())
+	ids := make([]string, 0, len(req.GetNames()))
+	for i, name := range req.GetNames() {
+		id := db.PriceIDFromResourceName(name)
+		ids = append(ids, id)
+		log.Printf("BatchGetPrices() - processing name %d: %s => %s", i, name, id)
+	}
+	quotes, err := api.BulkStockQuotes().Symbols(ids).Get()
+	// quotes, err := stubGetBulkStockQuotes(ids)
 	if err != nil {
-		log.Printf("BatchGetPrices() - Error fetching stock quotes for %s: %v", req.GetNames(), err)
+		log.Printf("BatchGetPrices() - Error fetching stock quotes for %v: %v", ids, err)
 		return nil, err
 	}
-	log.Printf("BatchGetPrices() - Fetched stock quotes for %s: %v", req.GetNames(), quotes)
+	log.Printf("BatchGetPrices() - Fetched stock quotes for %v: %v", ids, quotes)
 	p := make([]*pb.Price, 0, len(quotes))
 	for _, q := range quotes {
 		priceChange := 0.0
@@ -80,7 +61,7 @@ func (s *PriceServer) BatchGetPrices(ctx context.Context, req *pb.BatchGetPrices
 			priceChange = *q.Change
 		}
 		p = append(p, &pb.Price{
-			PriceId:     q.Symbol,
+			Name:        "prices/" + q.Symbol,
 			Price:       q.Last,
 			PriceChange: priceChange,
 		})
@@ -94,18 +75,21 @@ func (s *PriceServer) BatchGetPrices(ctx context.Context, req *pb.BatchGetPrices
 // For now, it streams prices for each requested ticker symbol a small number of
 // iterations, sleeping between each batch
 func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceService_StreamPricesServer) error {
-	log.Printf("StreamPrices() - streaming prices for: %v", req.GetPriceIds())
-
+	log.Printf("StreamPrices() - streaming prices for: %v", req.GetNames())
+	ids := make([]string, 0, len(req.GetNames()))
+	for _, name := range req.GetNames() {
+		ids = append(ids, db.PriceIDFromResourceName(name))
+	}
 	for range 2 {
 
 		// No easy way to set a timeout here
-		quotes, err := api.BulkStockQuotes().Symbols(req.GetPriceIds()).Get()
-		// quotes, err := stubGetBulkStockQuotes(req.GetPriceIds())
+		quotes, err := api.BulkStockQuotes().Symbols(ids).Get()
+		// quotes, err := stubGetBulkStockQuotes(ids)
 		if err != nil {
-			log.Printf("StreamPrices() - Error fetching bulk stock quotes for %v: %v", req.GetPriceIds(), err)
+			log.Printf("StreamPrices() - Error fetching bulk stock quotes for %v: %v", ids, err)
 			continue
 		}
-		log.Printf("StreamPrices() - Fetched bulk stock quotes for %v: %v", req.GetPriceIds(), quotes)
+		log.Printf("StreamPrices() - Fetched bulk stock quotes for %v: %v", ids, quotes)
 
 		// Map quotes by symbol for easy lookup
 		for _, q := range quotes {
@@ -114,7 +98,7 @@ func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceS
 				priceChange = *q.Change
 			}
 			price := &pb.Price{
-				PriceId:     q.Symbol,
+				Name:        "prices/" + q.Symbol,
 				Price:       q.Last,
 				PriceChange: priceChange,
 			}
@@ -128,6 +112,6 @@ func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceS
 		time.Sleep(10 * time.Second)
 	}
 
-	log.Printf("StreamPrices() - completed streaming prices for: %v", req.GetPriceIds())
+	log.Printf("StreamPrices() - completed streaming prices for: %v", req.GetNames())
 	return nil
 }
