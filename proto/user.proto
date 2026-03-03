@@ -20,8 +20,9 @@ service UserService {
     }
     // GetUser retrieves a user by ID.
     rpc GetUser (GetUserRequest) returns (GetUserReply) {
+        // Example: GET {{host}}:{{port}}/v1/users/123
         option (google.api.http) = {
-          get: "/v1/users/{user_id}"
+          get: "/v1/{name=users/*}"
         };
     }
     // UpdateUser updates an existing user.
@@ -68,7 +69,9 @@ message CreateUserReply {
 }
 
 message GetUserRequest {
-    string user_id = 1;
+    string name = 1 [(google.api.resource_reference) = {
+        type: "rjfield.com/backend/User"
+    }];
 }
 
 message GetUserReply {
@@ -84,7 +87,9 @@ message UpdateUserReply {
 }   
 
 message DeleteUserRequest {
-    string user_id = 1;
+    string name = 1 [(google.api.resource_reference) = {
+        type: "rjfield.com/backend/User"
+    }];
 }
 
 message DeleteUserReply {
@@ -106,5 +111,5 @@ message AuthenticateUserRequest {
 }
 message AuthenticateUserReply {
   string token = 1;
-  string user_id = 2;
+  string name = 2;
 }

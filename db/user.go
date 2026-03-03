@@ -12,7 +12,7 @@ import (
 // createUser inserts a new record into the 'users' table and prints the new ID.
 func createUser(u *pb.User) (*pb.User, error) {
 	log.Printf("createUser() - creating user: %v", u)
-	// SQL statement with placeholders ($1, $2, etc. for Postgres)
+
 	sqlStatement := `
 		INSERT INTO users (username, password, given_name, family_name, email)
 		VALUES ($1, $2, $3, $4, $5)
@@ -43,8 +43,6 @@ func readUser(id string) (*pb.User, error) {
 	var user pb.User
 	var userId string
 
-	// Scan copies the column values from the matched row into the variables
-	// pointed to by the arguments. Errors (including sql.ErrNoRows) are handled here.
 	switch err := row.Scan(&userId, &user.Username, &user.PasswordHash, &user.GivenName, &user.FamilyName, &user.Email); err {
 	case sql.ErrNoRows:
 		log.Printf("readUser() - no user found with ID: %s", id)
@@ -139,13 +137,10 @@ func authenticateUser(username string, password string) (string, error) {
 	log.Printf("authenticateUser() - authenticating user: %s", username)
 	sqlStatement := `SELECT id FROM users WHERE username = $1 and password = $2;`
 
-	// QueryRow retrieves at most a single database row.
 	row := db.QueryRow(sqlStatement, username, password)
 
 	var userId string
 
-	// Scan copies the column values from the matched row into the variables
-	// pointed to by the arguments. Errors (including sql.ErrNoRows) are handled here.
 	switch err := row.Scan(&userId); err {
 	case sql.ErrNoRows:
 		log.Printf("authenticateUser() - username %s or password incorrect", username)
@@ -158,42 +153,3 @@ func authenticateUser(username string, password string) (string, error) {
 		return "", fmt.Errorf("query error: %v", err)
 	}
 }
-
-// ListAssetsByUser fetches all assets for a given user ID across their accounts.
-// func listAssetsByUser(userId string) ([]*pb.Asset, error) {
-// 	log.Printf("listAssetsByUser() - fetching assets for user ID: %s", userId)
-// 	sqlStatement :=
-// 		`select u.username, a.name, ast.ticker, ast.holding_amount
-// 	 from accounts a, users u, assets ast
-// 	where
-// 		a.user_id = u.id and
-// 		ast.user_id = u.id and
-// 		ast.account_id = a.id and
-// 		u.id = $1
-// 	order by a.name`
-
-// 	rows, err := db.Query(sqlStatement, userId)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	defer rows.Close()
-
-// 	var assets []*pb.Asset
-
-// 	for rows.Next() {
-// 		var a pb.Asset
-// 		err := rows.Scan(&a.UserId, &a.AccountName, &a.Ticker, &a.HoldingAmount)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		assets = append(assets, &a)
-// 		log.Printf("listAssetsByUser() - UserID: %s, AccountName: %s, Ticker: %s, HoldingAmount: %f", a.UserId, a.AccountName, a.Ticker, a.HoldingAmount)
-// 	}
-
-// 	err = rows.Err()
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	log.Printf("listAssetsByUser() - returning %d assets", len(assets))
-// 	return assets, nil
-// }

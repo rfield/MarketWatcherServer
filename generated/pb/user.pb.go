@@ -205,7 +205,7 @@ func (x *CreateUserReply) GetUser() *User {
 
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -240,9 +240,9 @@ func (*GetUserRequest) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetUserRequest) GetUserId() string {
+func (x *GetUserRequest) GetName() string {
 	if x != nil {
-		return x.UserId
+		return x.Name
 	}
 	return ""
 }
@@ -381,7 +381,7 @@ func (x *UpdateUserReply) GetUser() *User {
 
 type DeleteUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -416,9 +416,9 @@ func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
 	return file_user_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *DeleteUserRequest) GetUserId() string {
+func (x *DeleteUserRequest) GetName() string {
 	if x != nil {
-		return x.UserId
+		return x.Name
 	}
 	return ""
 }
@@ -626,7 +626,7 @@ func (x *AuthenticateUserRequest) GetPassword() string {
 type AuthenticateUserReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -668,9 +668,9 @@ func (x *AuthenticateUserReply) GetToken() string {
 	return ""
 }
 
-func (x *AuthenticateUserReply) GetUserId() string {
+func (x *AuthenticateUserReply) GetName() string {
 	if x != nil {
-		return x.UserId
+		return x.Name
 	}
 	return ""
 }
@@ -697,9 +697,10 @@ const file_user_proto_rawDesc = "" +
 	".user.UserR\x04user\"1\n" +
 	"\x0fCreateUserReply\x12\x1e\n" +
 	"\x04user\x18\x01 \x01(\v2\n" +
-	".user.UserR\x04user\")\n" +
-	"\x0eGetUserRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\".\n" +
+	".user.UserR\x04user\"C\n" +
+	"\x0eGetUserRequest\x121\n" +
+	"\x04name\x18\x01 \x01(\tB\x1d\xfaA\x1a\n" +
+	"\x18rjfield.com/backend/UserR\x04name\".\n" +
 	"\fGetUserReply\x12\x1e\n" +
 	"\x04user\x18\x01 \x01(\v2\n" +
 	".user.UserR\x04user\"3\n" +
@@ -708,9 +709,10 @@ const file_user_proto_rawDesc = "" +
 	".user.UserR\x04user\"1\n" +
 	"\x0fUpdateUserReply\x12\x1e\n" +
 	"\x04user\x18\x01 \x01(\v2\n" +
-	".user.UserR\x04user\",\n" +
-	"\x11DeleteUserRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"+\n" +
+	".user.UserR\x04user\"F\n" +
+	"\x11DeleteUserRequest\x121\n" +
+	"\x04name\x18\x01 \x01(\tB\x1d\xfaA\x1a\n" +
+	"\x18rjfield.com/backend/UserR\x04name\"+\n" +
 	"\x0fDeleteUserReply\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\"N\n" +
 	"\x10ListUsersRequest\x12\x1b\n" +
@@ -723,15 +725,15 @@ const file_user_proto_rawDesc = "" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"Q\n" +
 	"\x17AuthenticateUserRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"F\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"A\n" +
 	"\x15AuthenticateUserReply\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\tR\x06userId2\xe0\x03\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name2\xdf\x03\n" +
 	"\vUserService\x12>\n" +
 	"\n" +
 	"CreateUser\x12\x17.user.CreateUserRequest\x1a\x15.user.CreateUserReply\"\x00\x12L\n" +
-	"\tListUsers\x12\x16.user.ListUsersRequest\x1a\x14.user.ListUsersReply\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/users\x12P\n" +
-	"\aGetUser\x12\x14.user.GetUserRequest\x1a\x12.user.GetUserReply\"\x1b\x82\xd3\xe4\x93\x02\x15\x12\x13/v1/users/{user_id}\x12>\n" +
+	"\tListUsers\x12\x16.user.ListUsersRequest\x1a\x14.user.ListUsersReply\"\x11\x82\xd3\xe4\x93\x02\v\x12\t/v1/users\x12O\n" +
+	"\aGetUser\x12\x14.user.GetUserRequest\x1a\x12.user.GetUserReply\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/{name=users/*}\x12>\n" +
 	"\n" +
 	"UpdateUser\x12\x17.user.UpdateUserRequest\x1a\x15.user.UpdateUserReply\"\x00\x12>\n" +
 	"\n" +

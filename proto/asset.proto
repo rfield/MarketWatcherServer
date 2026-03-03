@@ -48,8 +48,6 @@ message Asset {
     pattern: "users/{user_id}/accounts/{account_id}/assets/{asset_id}"
   };
   string name = 1; // Fully-qualified resource name in the format "users/{user_id}/accounts/{account_id}/assets/{asset_id}"
-
-  // TODO: Add remove user_id  and account_name if possible, since they are redundant with the resource name
   
   string ticker         = 4;
   double holding_amount = 5;

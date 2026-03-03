@@ -12,17 +12,17 @@ service PriceService {
   // Standard CRUD operations
   // GetPrice retrieves a price by ID, typically a ticker symbol or product code.
   rpc GetPrice (GetPriceRequest) returns (GetPriceReply) {
+    // Example:
+    // GET {{host}}:{{port}}/v1/prices/MSFT
     option (google.api.http) = {
-      get: "/v1/prices/{price_id}"
+      get: "/v1/{name=prices/*}"
     };
   }
 
-  // Custom operations
-  // GetPrices retrieves multiple prices by their IDs.
-  rpc GetPrices (GetPricesRequest) returns (GetPricesReply) {}
-
   // Batch operations
   rpc BatchGetPrices (BatchGetPricesRequest) returns (BatchGetPricesReply) {
+    // Example:
+    // GET {{host}}:{{port}}/v1/prices:batchGet?names=prices/AAPL&names=prices/GOOG&names=prices/MSFT
     option (google.api.http) = {
       get: "/v1/prices:batchGet"
     };
@@ -33,30 +33,26 @@ service PriceService {
 }
 
 message GetPriceRequest {
-  string price_id = 1;
+  string name = 1 [(google.api.resource_reference) = {
+    type: "rjfield.com/backend/Price"
+  }]; // The price resource name, e.g., "prices/MSFT" 
 }
 
 message GetPriceReply {
   Price price = 1;
 }
 
-message GetPricesRequest {
-  repeated string price_ids = 1;
-} 
-
-message GetPricesReply {
-  repeated Price prices = 1;
-} 
-
 message BatchGetPricesRequest {
-  repeated string names = 1;
+  repeated string names = 1 [(google.api.resource_reference) = {
+    type: "rjfield.com/backend/Price"
+  }]; // The price resource names, e.g., "prices/MSFT", "prices/AAPL", "prices/GOOG"
 } 
 message BatchGetPricesReply {
   repeated Price prices = 1;
 }
 
 message StreamPricesRequest {
-  repeated string price_ids = 1;
+  repeated string names = 1;
 }
 
 message StreamPricesReply {
@@ -71,7 +67,6 @@ message Price {
     };
   string name = 10; // fully qualified name, e.g. "prices/456"
 
-  string price_id = 1;
   double price = 2;
   double price_change = 3;
 }

@@ -91,6 +91,11 @@ func AccountIDFromResourceName(resourceName string) string {
 	return resourceMap["accounts"]
 }
 
+func PriceIDFromResourceName(resourceName string) string {
+	resourceMap := resourceNameToMap(resourceName)
+	return resourceMap["prices"]
+}
+
 func resourceNameToMap(resourceName string) map[string]string {
 
 	// 1. Split the resource name by "/"; i.e. "publishers/123/books/345"
