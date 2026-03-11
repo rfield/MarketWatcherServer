@@ -33,6 +33,7 @@ func run() error {
 	err = gw.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	err = gw.RegisterAssetServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	err = gw.RegisterPriceServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err = gw.RegisterNotificationServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}

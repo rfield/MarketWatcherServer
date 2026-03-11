@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package account;
+
+option go_package = "./pb";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/resource.proto";
+import "google/api/annotations.proto";
+
+// NotificationService provides operations for managing user notifications.
+service NotificationService {
+  // ListNotifications retrieves a (paginated) list of notifications for a user.
+  rpc ListNotifications (ListNotificationsRequest) returns (ListNotificationsReply) {
+      option (google.api.http) = {      
+        get: "/v1/{parent=users/*}/notifications"
+      };
+  }
+
+  // UpdateNotification updates the status of a notification, such as marking it as read or archived.
+  rpc UpdateNotification (UpdateNotificationRequest) returns (UpdateNotificationReply) {
+      option (google.api.http) = {
+        patch: "/v1/{name=users/*/notifications/*}"
+        body: "notification"
+      };
+  }
+}   
+
+message ListNotificationsRequest {
+    string parent = 1 [(google.api.resource_reference) = {
+      type: "rjfield.com/backend/User"
+    }];  // The user resource name, e.g., "users/{user_id}"
+
+    int32 page_size = 2;
+    string page_token = 3;
+}
+
+message ListNotificationsReply {
+    repeated Notification notifications = 1;
+}   
+
+message UpdateNotificationRequest {
+    string name = 1 [(google.api.resource_reference) = {
+      type: "rjfield.com/backend/Notification"
+    }];  // The notification resource name, e.g., "users/{user_id}/notifications/{notification_id}"
+
+    Notification notification = 2; // The updated notification data
+}   
+message UpdateNotificationReply {
+    Notification notification = 1; // The updated notification data
+}
+
+// Notification represents a user notification in the system.
+message Notification {
+  option (google.api.resource) = {
+      type: "rjfield.com/backend/Notification"
+      pattern: "users/{user_id}/notifications/{notification_id}"
+  };
+  string name = 1; // Fully-qualified resource name in the format "users/{user_id}/notifications/{notification_id}"
+
+  enum NotificationType {
+    UNKNOWN = 0;
+    ACCOUNT_ALERT = 1; // Notifications related to account issues
+    PROMOTION = 2; // Promotional notifications
+    SYSTEM_UPDATE = 3; // Notifications about system updates or maintenance
+  }
+  Notification.NotificationType type = 2; // The type of notification
+  string title = 3; // A brief title for the notification
+  string message = 4; // The detailed message of the notification
+  enum NotificationStatus {
+    UNREAD = 0;
+    READ = 1;
+    ARCHIVED = 2;
+  }
+  Notification.NotificationStatus status = 5; // The current status of the notification
+  google.protobuf.Timestamp created_at = 6; // Timestamp when the notification was created
+}
