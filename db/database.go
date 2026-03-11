@@ -79,6 +79,16 @@ func ListAssets(userId, accountId string) ([]*pb.Asset, error) {
 	return listAssets(userId, accountId)
 }
 
+// Notification CRUD operations
+func ListNotifications(userId string) ([]*pb.Notification, error) {
+	return listNotifications(userId)
+}
+func UpdateNotification(userId string, notificationId string, status pb.Notification_NotificationStatus) (*pb.Notification, error) {
+	return updateNotification(userId, notificationId, status)
+}
+
+// Price CRUD operations
+
 // Utility functions
 
 func UserIDFromResourceName(resourceName string) string {
@@ -94,6 +104,11 @@ func AccountIDFromResourceName(resourceName string) string {
 func PriceIDFromResourceName(resourceName string) string {
 	resourceMap := resourceNameToMap(resourceName)
 	return resourceMap["prices"]
+}
+
+func NotificationIDFromResourceName(resourceName string) string {
+	resourceMap := resourceNameToMap(resourceName)
+	return resourceMap["notifications"]
 }
 
 func resourceNameToMap(resourceName string) map[string]string {

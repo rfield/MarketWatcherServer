@@ -29,12 +29,19 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	px := pb.NewPriceServiceClient(conn)
-	prsp, err := px.BatchGetPrices(ctx, &pb.BatchGetPricesRequest{Names: []string{"prices/MSFT", "prices/AAPL", "prices/GOOG"}})
+	nx := pb.NewNotificationServiceClient(conn)
+	nrsp, err := nx.ListNotifications(ctx, &pb.ListNotificationsRequest{Parent: "users/b0159a28-5a03-403f-ba2f-192b41a32d9a"})
 	if err != nil {
-		log.Fatalf("could not get price: %v", err)
+		log.Fatalf("could not get notifications: %v", err)
 	}
-	log.Printf("Price: %s", prsp.GetPrices())
+	log.Printf("Notifications: %s", nrsp.GetNotifications())
+
+	// px := pb.NewPriceServiceClient(conn)
+	// prsp, err := px.BatchGetPrices(ctx, &pb.BatchGetPricesRequest{Names: []string{"prices/MSFT", "prices/AAPL", "prices/GOOG"}})
+	// if err != nil {
+	// 	log.Fatalf("could not get price: %v", err)
+	// }
+	// log.Printf("Price: %s", prsp.GetPrices())
 
 	// prsp, err := px.GetPrice(ctx, &pb.GetPriceRequest{Name: "prices/MSFT"})
 	// if err != nil {

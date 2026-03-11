@@ -46,6 +46,8 @@ bin/mkt_server
 
 [descriptor.proto in Google's Github](https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/descriptor.proto)
 
+[timestamp.proto in Google's Github](https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/timestamp.proto)
+
 Other Google API Dependencies, when using the [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway) to create a ReST Proxy for your gRPC Endpoints.
 
 https://github.com/googleapis/googleapis/blob/master/google/api/httpbody.proto
