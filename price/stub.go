@@ -3,7 +3,6 @@ package price
 import (
 	"log"
 	"math/rand"
-	"strings"
 
 	"github.com/MarketDataApp/sdk-go/models"
 )
@@ -32,17 +31,9 @@ func stubGetStockQuotes(id string) ([]models.StockQuote, error) {
 func stubGetBulkStockQuotes(ids []string) ([]models.StockQuote, error) {
 	change := 0.0
 	log.Printf("stubGetBulkStockQuotes() - received: %v", ids)
-	//TO DO - break up the ids seperated by comma
-	s := ids[0]
-	log.Printf("stubGetBulkStockQuotes() - received: %v", s)
-	// l := s[1 : len(s)-1]
-	l := s
-	log.Printf("stubGetBulkStockQuotes() - received: %v", l)
-	new_ids := strings.Split(l, ",")
-	log.Printf("stubGetBulkStockQuotes() - received: %v", new_ids)
 
-	p := make([]models.StockQuote, 0, len(new_ids))
-	for _, id := range new_ids {
+	p := make([]models.StockQuote, 0, len(ids))
+	for _, id := range ids {
 		p = append(p, models.StockQuote{
 			Symbol: id,
 			Last:   100.0 * rand.Float64(),
