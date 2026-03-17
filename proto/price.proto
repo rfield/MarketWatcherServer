@@ -30,6 +30,18 @@ service PriceService {
 
   // Streaming operations
   rpc StreamPrices (StreamPricesRequest) returns (stream StreamPricesReply) {}
+
+  // Custom operations
+  // GetHistoricalPrices retrieves historical price data for a given asset.
+  // Note that this is a very simple implementation that just returns 
+  // the last 6 months of closing prices.
+  // Additional flexibiltity could be added by allowing the client to specify a
+  // date range and/or resolution (e.g., daily, weekly, monthly).
+  rpc GetHistoricalPrices (GetHistoricalPricesRequest) returns (GetHistoricalPricesReply) {
+    option (google.api.http) = {
+      get: "/v1/{name=prices/*}:historical"
+    };
+  }
 }
 
 message GetPriceRequest {
@@ -57,6 +69,16 @@ message StreamPricesRequest {
 
 message StreamPricesReply {
   Price price = 1;
+}
+
+message GetHistoricalPricesRequest {
+  string name = 1 [(google.api.resource_reference) = {
+    type: "rjfield.com/backend/Price"
+  }]; // The price resource name, e.g., "prices/MSFT" 
+}
+
+message GetHistoricalPricesReply {
+  repeated Price prices = 1;
 }
 
 // Price is a top level message representing an asset price

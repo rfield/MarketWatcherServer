@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PriceService_GetPrice_FullMethodName       = "/price.PriceService/GetPrice"
-	PriceService_BatchGetPrices_FullMethodName = "/price.PriceService/BatchGetPrices"
-	PriceService_StreamPrices_FullMethodName   = "/price.PriceService/StreamPrices"
+	PriceService_GetPrice_FullMethodName            = "/price.PriceService/GetPrice"
+	PriceService_BatchGetPrices_FullMethodName      = "/price.PriceService/BatchGetPrices"
+	PriceService_StreamPrices_FullMethodName        = "/price.PriceService/StreamPrices"
+	PriceService_GetHistoricalPrices_FullMethodName = "/price.PriceService/GetHistoricalPrices"
 )
 
 // PriceServiceClient is the client API for PriceService service.
@@ -37,6 +38,13 @@ type PriceServiceClient interface {
 	BatchGetPrices(ctx context.Context, in *BatchGetPricesRequest, opts ...grpc.CallOption) (*BatchGetPricesReply, error)
 	// Streaming operations
 	StreamPrices(ctx context.Context, in *StreamPricesRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[StreamPricesReply], error)
+	// Custom operations
+	// GetHistoricalPrices retrieves historical price data for a given asset.
+	// Note that this is a very simple implementation that just returns
+	// the last 6 months of closing prices.
+	// Additional flexibiltity could be added by allowing the client to specify a
+	// date range and/or resolution (e.g., daily, weekly, monthly).
+	GetHistoricalPrices(ctx context.Context, in *GetHistoricalPricesRequest, opts ...grpc.CallOption) (*GetHistoricalPricesReply, error)
 }
 
 type priceServiceClient struct {
@@ -86,6 +94,16 @@ func (c *priceServiceClient) StreamPrices(ctx context.Context, in *StreamPricesR
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type PriceService_StreamPricesClient = grpc.ServerStreamingClient[StreamPricesReply]
 
+func (c *priceServiceClient) GetHistoricalPrices(ctx context.Context, in *GetHistoricalPricesRequest, opts ...grpc.CallOption) (*GetHistoricalPricesReply, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetHistoricalPricesReply)
+	err := c.cc.Invoke(ctx, PriceService_GetHistoricalPrices_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PriceServiceServer is the server API for PriceService service.
 // All implementations must embed UnimplementedPriceServiceServer
 // for forward compatibility.
@@ -99,6 +117,13 @@ type PriceServiceServer interface {
 	BatchGetPrices(context.Context, *BatchGetPricesRequest) (*BatchGetPricesReply, error)
 	// Streaming operations
 	StreamPrices(*StreamPricesRequest, grpc.ServerStreamingServer[StreamPricesReply]) error
+	// Custom operations
+	// GetHistoricalPrices retrieves historical price data for a given asset.
+	// Note that this is a very simple implementation that just returns
+	// the last 6 months of closing prices.
+	// Additional flexibiltity could be added by allowing the client to specify a
+	// date range and/or resolution (e.g., daily, weekly, monthly).
+	GetHistoricalPrices(context.Context, *GetHistoricalPricesRequest) (*GetHistoricalPricesReply, error)
 	mustEmbedUnimplementedPriceServiceServer()
 }
 
@@ -117,6 +142,9 @@ func (UnimplementedPriceServiceServer) BatchGetPrices(context.Context, *BatchGet
 }
 func (UnimplementedPriceServiceServer) StreamPrices(*StreamPricesRequest, grpc.ServerStreamingServer[StreamPricesReply]) error {
 	return status.Error(codes.Unimplemented, "method StreamPrices not implemented")
+}
+func (UnimplementedPriceServiceServer) GetHistoricalPrices(context.Context, *GetHistoricalPricesRequest) (*GetHistoricalPricesReply, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetHistoricalPrices not implemented")
 }
 func (UnimplementedPriceServiceServer) mustEmbedUnimplementedPriceServiceServer() {}
 func (UnimplementedPriceServiceServer) testEmbeddedByValue()                      {}
@@ -186,6 +214,24 @@ func _PriceService_StreamPrices_Handler(srv interface{}, stream grpc.ServerStrea
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type PriceService_StreamPricesServer = grpc.ServerStreamingServer[StreamPricesReply]
 
+func _PriceService_GetHistoricalPrices_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetHistoricalPricesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PriceServiceServer).GetHistoricalPrices(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PriceService_GetHistoricalPrices_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PriceServiceServer).GetHistoricalPrices(ctx, req.(*GetHistoricalPricesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PriceService_ServiceDesc is the grpc.ServiceDesc for PriceService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -200,6 +246,10 @@ var PriceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BatchGetPrices",
 			Handler:    _PriceService_BatchGetPrices_Handler,
+		},
+		{
+			MethodName: "GetHistoricalPrices",
+			Handler:    _PriceService_GetHistoricalPrices_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

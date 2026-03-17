@@ -1,13 +1,13 @@
 package main
 
-import (
-	// "database/sql"
-	"fmt"
-	"log"
+// import (
+// 	// "database/sql"
+// 	"fmt"
+// 	"log"
 
-	_ "github.com/lib/pq"
-	"rjfield.com/backend/db" // Adjust the import path as necessary
-)
+// 	_ "github.com/lib/pq"
+// 	"rjfield.com/backend/db" // Adjust the import path as necessary
+// )
 
 // const (
 // 	host     = "localhost"
@@ -16,7 +16,7 @@ import (
 // 	password = "admin"
 // 	dbname   = "postgres"
 
-func main() {
+// func main2() {
 	// Connection string
 	// psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 	// 	host, port, user, password, dbname)
@@ -35,11 +35,11 @@ func main() {
 	// }
 	// fmt.Println("Successfully connected to the database!")
 
-	assets, err := db.ListAssets("b0159a28-5a03-403f-ba2f-192b41a32d9a", "fa87e1d3-2e26-45cd-a708-1e72fb02f9a3")
-	if err != nil {
-		log.Fatalf("Error fetching assets: %v", err)
-	}
-	fmt.Printf("Fetched assets: %+v\n", assets)
+	// assets, err := db.ListAssets("b0159a28-5a03-403f-ba2f-192b41a32d9a", "fa87e1d3-2e26-45cd-a708-1e72fb02f9a3")
+	// if err != nil {
+	// 	log.Fatalf("Error fetching assets: %v", err)
+	// }
+	// fmt.Printf("Fetched assets: %+v\n", assets)
 
 	// accounts, err := db.ListAccounts("b0159a28-5a03-403f-ba2f-192b41a32d9a")
 	// if err != nil {

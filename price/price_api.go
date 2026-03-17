@@ -115,3 +115,40 @@ func (s *PriceServer) StreamPrices(req *pb.StreamPricesRequest, stream pb.PriceS
 	log.Printf("StreamPrices() - completed streaming prices for: %v", req.GetNames())
 	return nil
 }
+
+func (s *PriceServer) GetHistoricalPrices(ctx context.Context, req *pb.GetHistoricalPricesRequest) (*pb.GetHistoricalPricesReply, error) {
+	log.Printf("GetHistoricalPrices() - received: %v", req.GetName())
+	id := db.PriceIDFromResourceName(req.GetName())
+	candles, err := api.StockCandles().Resolution("1M").Symbol(id).From(getFromDate()).To(getToDate()).Get()
+	if err != nil {
+		log.Printf("GetHistoricalPrices() - Error fetching stock candles for %s: %v", req.GetName(), err)
+		return nil, err
+	}
+	log.Printf("GetHistoricalPrices() - Fetched stock candles for %s: %v", req.GetName(), candles)
+	prices := make([]*pb.Price, 0, len(candles))
+	for _, c := range candles {
+		prices = append(prices, &pb.Price{
+			Name:  "prices/" + id,
+			Price: c.Close,
+		})
+	}
+	return &pb.GetHistoricalPricesReply{
+		Prices: prices,
+	}, nil
+}
+
+func getFromDate() string {
+	now := time.Now()
+	// Get the first day of the current month
+	firstOfMonth := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	// Subtract 6 months to get the from date
+	sixMonthsAgo := firstOfMonth.AddDate(0, -6, 0)
+	return sixMonthsAgo.Format("2006-01-02")
+}
+
+func getToDate() string {
+	now := time.Now()
+	// Get the first day of the current month
+	firstOfMonth := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	return firstOfMonth.Format("2006-01-02")
+}
